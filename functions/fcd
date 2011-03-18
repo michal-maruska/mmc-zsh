@@ -1,0 +1,30 @@
+
+# 
+
+fcd() {
+numero=$1
+
+cat=$(expr match ${numero} '[0-9]*\([dvb]\?\)')
+numero=$(expr match ${numero} '\([0-9]*\)')
+
+
+thousand=$(expr $numero / 1000)
+cd /dati/foto/${thousand}/$numero
+echo $cat
+
+case $cat in
+    d)  cd doc;
+    ;;
+    b)  cd b;
+    ;;
+    v)  cd video;
+    ;;
+esac
+}
+
+fcdv() {
+numero=$1
+thousand=$(expr $numero / 1000)
+cd /dati/foto/${thousand}/$numero/video/
+}
+

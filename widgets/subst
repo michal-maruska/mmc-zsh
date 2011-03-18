@@ -1,0 +1,8 @@
+
+
+# print -z ${"$(<~/activity/zsh/rotate)"}                
+
+subst (){
+      print -z ${"$(<$1)"}
+}
+

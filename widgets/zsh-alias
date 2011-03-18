@@ -1,0 +1,91 @@
+#! /usr/bin/zsh -f
+
+
+edit-alias() {             
+    local al
+    al="$(alias $1)"  ||  return 1 
+    print -z alias $al
+}
+
+
+# expand the 1st word as an alias:
+# not previous 
+
+my-expand-alias() {
+
+# get the 1st  sequence of non space:
+
+#old=WORDCHARS
+#WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
+
+zle  beginning-of-line;
+
+# zle vi-forward-word-end;        # this doesn't work w/  'x.m'
+
+zle forward-to-space;           # why?
+
+# forward
+# bug!
+# If we are  *really* after the end of the word, then this is ok
+# otherwise   "cff" will expand to "cf" + "f" !
+# zle  backward-char;
+
+if [ ' ' = ${LBUFFER[$CURSOR]} ];
+then
+zle  backward-char;
+fi
+
+
+
+
+
+#    zle  forward-word;
+#zle backward-char;
+
+  # for safety, in case there's an = which will mess things up...
+local alias=${LBUFFER#*=}
+# echo ">$alias<"
+if [ -z $alias ]
+then
+    zle beep
+    WORDCHARS=old
+    return 1
+fi
+    
+if  ! alias=$(alias $LBUFFER) ; then
+    zle beep
+    WORDCHARS=old
+    return 1
+fi
+LBUFFER=${(Q)${alias#*=}}
+# subtract & add string lenghts
+# position=$CURSOR+ ${alias#*=}
+
+WORDCHARS=old
+}
+
+
+
+
+zle -N my-expand-alias
+zle -N expand-alias
+# bindkey '^[^e' expand-alias
+
+# in 4.2.5, if i try to expand an alias which starts with "- " (e.g. alias ds='- du -x -s *(/) |sort -n| human 1024')
+# bindkey '^[^e' _expand-alias  fails!
+# [05 lug 06] mmc:   So I go back to my function:
+bindkey '^[^e' my-expand-alias
+# _expand_alias
+
+# zle  history-incremental-search-forward;  
+
+
+
+# echo 
+output_region (){
+    region=${LBUFFER[0,$CURSOR]}
+    echo $CURSOR $MARK $region
+}
+
+zle -N output_region

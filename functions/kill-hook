@@ -1,0 +1,7 @@
+
+kill_region_hook()
+{
+#	beep;
+	echo -ne "\e]56;$1\a"
+#	echo -e -n '\033]0;'${1}'\a'
+}

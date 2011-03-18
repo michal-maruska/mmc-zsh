@@ -1,0 +1,8 @@
+#
+# quite good
+bindkey -s 'j' '^E&'
+
+# untested
+bindkey -s '^|' '^E&!'
+
+bindkey -s '^Z' 'bg'

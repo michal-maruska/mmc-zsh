@@ -1,0 +1,191 @@
+
+
+### Xterm title:
+
+# if under_xterm;
+#     then
+# preexec (){
+# #"\033]0;${TITLE}\a"
+# # builtin print -P  "%{\e]0;%}zsh %n@%m:%d"
+# #  x_title "$1"
+# #  cwd=
+#   echo -n "\033]0;$1[$PWD]\a";
+# #\033]0;$USER:zsh $1\a
+# }
+
+# fi  
+
+
+
+if false;
+    then
+# preexec hook shows command in title as it's running,
+# and precmd sets it to something else when it's done.
+    case $TERM in
+	xterm*|screen*)
+	    preexec () {
+		export CURRENTCMD="$1"
+		print -Pn "\e]0;$1\a"
+	    }
+	    precmd () {
+		if [[ ! -z $CURRENTCMD ]]; then
+		    print -Pn "\e]0;($CURRENTCMD)\a"
+		fi
+	    }
+	    ;;
+    esac
+fi
+
+
+
+
+mytitle() {
+       # Use these two for GNU Screen:
+#       dir=${pwd}
+#    print -nR $'\033k'$1$'\033'\\
+#	print -nR $'\033]0;'$2$'\a'
+
+       # Use this one instead for XTerms:
+    print -nR $'\033]0;'$LOGNAME"@"$HOST":"${TTY##*/}" "$PWD" "$*$'\a'
+    #  $TTY!
+}
+
+# function precmd {
+#     title zsh "$PWD"
+# }
+
+# function preexec {
+#     emulate -L zsh
+#     local -a cmd; cmd=(${(z)1})
+#     title $cmd[1]:t "$cmd[2,-1]"
+# }
+
+
+if under_xterm;
+    then
+preexec() {
+    emulate -L zsh
+    local -a cmd; cmd=(${(z)1})             # Re-parse the command line
+
+       # Construct a command that will output the desired job number.
+    case $cmd[1] in
+	fg) if (( $#cmd == 1 )); then
+                   # No arguments, must find the current job
+	    cmd=(builtin jobs -l %+)
+	    else
+                   # Replace the command name, ignore extra args.
+	    cmd=(builtin jobs -l $cmd[2])
+	    fi;;
+	%*) cmd=(builtin jobs -l $cmd[1]);; # Same as "else" above
+	*)  mytitle $cmd[1]:t "$cmd[2,-1]"    # Not resuming a job,
+	    return;;                        # so we're all done
+    esac
+
+    local -A jt; jt=(${(kv)jobtexts})       # Copy jobtexts for subshell
+
+       # Run the command, read its output, and look up the jobtext.
+       # Could parse $rest here, but $jobtexts (via $jt) is easier.
+    $cmd >>(read num rest
+	cmd=(${(z)${(e):-\$jt$num}})
+	mytitle $cmd[1]:t "$cmd[2,-1]") 2>/dev/null
+}
+fi
+
+
+
+### Prompts:
+#PROMPT='%m%# '    # default prompt
+#%RPROMPT=' %~'     # prompt for right side of screen
+
+
+
+## history number ??
+# typeset PROMPT_BANG=1
+#setopt PROMPT_BANG
+#setopt PROMPT_PERCENT
+#PS1=$'%{\e[1;31m%}<the rest of your prompt here>%{\e[0m%}'
+
+# yellow='%{\e[1;33;40m%}'
+# red='\e[01;31;40m'
+
+
+# NO_BGJOBS=0
+# precmd ()  {
+#   NO_BGJOBS=`ps -g  $$ | wc -l`
+#   let "NO_BGJOBS=NO_BGJOBS - 4"
+# }
+# #  echo "precmd $NO_BGJOBS"
+
+
+# echo "setting prompt $under_xterm"
+# xtitle    read prompt
+if under_xterm;
+    then
+#    echo "setting prompt under_xterm"
+#
+# (red (hostname)
+#      (username)
+    setopt  PROMPT_SUBST
+    # this contains the xterm title setting ?
+    if [ -z ${SUDO_USER} ]
+    then
+    sudo=""
+    else
+    sudo="${SUDO_USER}->"
+    if [[ $SUDO_COMMAND =~ "^/usr/sbin/chroot" ]]
+    then
+	chroot="${SUDO_COMMAND##/usr/sbin/chroot }@@"
+    else
+	chroot=""
+    fi
+    fi
+    # "" ... parameter and command substitution occur,
+    # $'' ??
+    # %n username,                          %m hostname        %f stop colour
+    #    %B bold %F fg color
+    PROMPT=$'%B%F{green}${sudo}%n@%F{yellow}${chroot}%m:%F{red}%5c\ \$NO_BGJOBS%f%U%?%u$ %_%{\e]2;zsh ${sudo}%n@${chroot}%m:$NO_BGJOBS%d%}%b'
+#    $'%{\e[1;33;40m%}%n@%{\e[1;32;40m%}%m:%{\e[01;31;40m%}%5c\ \$NO_BGJOBS%{\e[0m%}%U%?%u$ %_%{\e]2;zsh %n@%m:$NO_BGJOBS%d%}'
+    
+    RPS1="%B<%h %* %l%b\$NO_BGJOBS"
+
+
+#    PROMPT="%n@%m: %{${fg[red]}%}%~%{${fg[white]}%}\$ "
+#    PROMPT="%n@%m: %{${fg[red]}%}%~%{${fg[white]}}%$ "
+#    PROMPT="%n@%m: %{${fg[red]}%~${fg[white]}%} "
+else
+##
+    PROMPT=$'%{\e[1;33;40m%}%n@%m:%{\e[01;31;40m%}%5c\ '
+    
+fi
+
+
+# tramp/ M-x shell
+if [ "$TERM" = "dumb" ] ;
+then
+  echo $TERM
+  PROMPT="%n@%m:%5c "
+  # PROMPT="%h>"
+fi
+
+
+
+if false;
+then
+  if [ ! -z $INSIDE_EMACS ]; then
+#PROMPT="$'%n@%m:%5c\ %U%?%u$ %_%{]2;zsh %n@%m:'"
+     PROMPT="%h>"
+   else
+    setopt  PROMPT_SUBST
+    RPS1="%B<%h %* %l%b\$NO_BGJOBS"
+  fi
+fi                              # false
+
+
+# 
+#  %N
+# PROMPT=$"%{\e[1;33;40m%}%n@%m:\e[01;31;40m%5c\ %{\e[0m%}%U%?%u$ %_"
+# PROMPT='(!)$%{\e[1;33;40m%}%n@%m:\e[01;31;40m%5c\ %{\e[0m%}%U%?%u\$ %_'
+# screen ??
+# xterm: "]2;$1"
+# %0(w,domenica,)
+

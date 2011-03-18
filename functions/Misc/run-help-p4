@@ -1,0 +1,11 @@
+if [ $# -eq 0 ]; then
+    p4 help
+else
+    local al
+    # $(git config --get "alias.$1")
+    if al=$1; then
+        1=${al%% *}
+    fi
+    #man git-$1
+    p4 help $1
+fi

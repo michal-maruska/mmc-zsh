@@ -1,0 +1,54 @@
+# these functions _must_ be portable !!!
+
+
+under_bash(){
+ [ ! -z $BASH_VERSION ]
+ # [ "$SHELL" = "/bin/bash" -o  "$SHELL" = "/bin/sh" -o "$SHELL" = "/bin/rbash" ]
+}
+
+under_zsh(){
+  [ ! -z $ZSH_VERSION ]
+ #[ "$SHELL" = "/bin/zsh" ]
+}
+
+
+under_xterm(){
+#echo "under xterm $TERM"
+[ "$TERM" = "xterm" -o  "$TERM" = "rxvt"  -o  "$TERM" = "rxvt-unicode" ]
+# [[ $TERM == xterm ]]
+}
+
+relax(){
+	echo -n ""
+}
+
+my_source() {
+   #echo "source $1...."
+   [[ -e $1 ]] && source $1
+   # source $1
+   #echo "\t...end (source $1)"
+}
+
+
+
+
+shell_interactive(){
+if under_bash; then
+   true;
+   # set -o history
+   # or interactive_comments
+
+else
+    if under_zsh
+    then
+        if [[ -o interactive ]]; then
+            true;
+        else
+            false
+        fi
+    else
+    # other shells are not interactive!
+      false
+    fi
+fi
+}

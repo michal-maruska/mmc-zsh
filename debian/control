@@ -1,0 +1,12 @@
+Source: mmc-zsh
+Section: shells
+Priority: extra
+Maintainer: Michal Maruska <mmaruska@gmail.com>
+Build-Depends: cdbs, debhelper (>= 5), zsh
+Standards-Version: 3.7.2
+
+Package: mmc-zsh
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, zsh
+Description: Michal Maruska's convenient zsh files
+ My site-wise configs for zsh (line editing widgets)...

@@ -1,0 +1,250 @@
+### i rebind  M-h etc  to kill WHOLE argument
+# sometimes i still need this (detail):
+
+# see /etc/zsh/zshrc  for `arrows'
+
+
+
+## todo:  vi-backward-word
+##      is ther 
+
+
+
+# http://www.zshwiki.org/cgi-bin/wiki.pl?ZshBindkeys
+#  "${WORDCHARS:s@/@}"
+# "${(@)foo}"
+
+
+#
+#',*?_-.[]~=&;!#$%^(){}<>@'
+
+# not space, and not "/"
+#;'*?_-.[]~=&;!#$%^(){}<>/,@'
+#'*?_-.[]~=&;!#$%^(){}<>/'
+# zle -N is_quoted
+
+###  movement
+
+my_extended_wordchars="\"*?_-.'[]~=+&;!#$%^(){}<>:@,\\";
+my_extended_wordchars_space="${my_extended_wordchars} "
+my_extended_wordchars_slash="${my_extended_wordchars}/"
+
+function is_quoted(){
+ test "${BUFFER[$CURSOR-1,CURSOR-1]}" = "\\"
+}
+
+
+
+function set-xselection(){
+    echo ${BUFFER} | xsel
+}
+zle -N set-xselection
+
+
+unquote-forward-word(){
+    while is_quoted
+      do zle .forward-word
+    done
+}
+
+unquote-backward-word(){
+    while  is_quoted
+      do zle .backward-word
+    done
+}
+
+
+backward-to-space() {
+    local WORDCHARS=${my_extended_wordchars_slash}
+    zle .backward-word
+    unquote-backward-word
+}
+
+forward-to-space() {
+     local WORDCHARS=${my_extended_wordchars_slash}
+     #zle .forward-word
+     zle bash-forward-word
+     unquote-forward-word
+}
+
+
+
+backward-to-/ () {
+    local WORDCHARS=${my_extended_wordchars}
+    zle .backward-word
+    unquote-backward-word
+}
+
+forward-to-/ () {
+     local WORDCHARS=${my_extended_wordchars}
+     zle .forward-word
+     unquote-forward-word
+}
+
+
+
+
+zle -N backward-to-space
+zle -N forward-to-space
+
+zle -N backward-to-/
+zle -N forward-to-/
+
+
+bindkey "" backward-to-space
+bindkey "" forward-to-space
+
+bindkey "/" forward-to-/
+bindkey "\\" backward-to-/
+bindkey "+" backward-to-/
+
+# [ "${BUFFER[$CURSOR-1,$CURSOR]}" = '\ ' ]
+# bindkey '\eb' miciah-backward-word
+
+
+### delete
+zle -N kill-with-spaces
+
+# doesn't put on undo list !!
+# kill-with-spaces() {
+#     local words
+#     local WORDCHARS=""
+#     words="${(z)BUFFER}"
+#     BUFFER="${BUFFER%${words[-1]}[ ]#}"
+# }
+
+
+# NOT used:
+kill-to-position(){
+  from=shift;
+ # to=shift;
+  RBUFFER="${RBUFFER[$from,-1]}"
+}
+
+kill-backward-to-position(){
+  to=shift;
+ # to=shift;
+  LBUFFER="${LBUFFER[0,$to]}"
+}
+
+kill-with-spaces() {
+    zle set-mark-command
+    zle vi-forward-blank-word
+    zle kill-region
+    # todo: if previous is not space, than
+    LBUFFER="${LBUFFER} "
+}
+
+
+# [22 nov 05]
+kill-backward-with-spaces() {
+zle set-mark-command
+zle vi-backward-blank-word
+zle kill-region
+}
+zle -N kill-backward-with-spaces
+
+
+##  to /
+zle -N kill-to-/
+
+kill-to-/(){
+local saved_mark=${MARK}
+zle set-mark-command
+zle forward-to-/
+zle kill-region
+MARK=${saved_mark}
+}
+
+
+
+zle -N kill-backward-to-/
+kill-backward-to-/(){
+    local saved_mark=${MARK}
+    zle set-mark-command
+    zle backward-to-/
+    zle kill-region
+    MARK=${saved_mark}
+}
+
+
+bindkey "^[*" kill-to-/
+bindkey "^[<" kill-backward-to-/
+bindkey "^k" kill-to-/
+bindkey "k" kill-with-spaces
+
+#bindkey "" undo
+
+
+
+#LBUFFER RBUFFER
+#MARK
+#kill-to-position
+#$CURSOR
+
+
+bindkey "^Xh" kill-with-spaces
+bindkey "^X^h" backward-kill-word
+bindkey "^X^h" backward-kill-word
+#bindkey "" kill-with-spaces
+
+###   failed attempt to have a 'dead' key which stops the isearch. sort-of "C-m" in isearch in emacs.
+my-history-incremental-search-backward()
+{
+    bindkey "^m" exit-search
+    zle history-incremental-search-backward
+    bindkey "^m" accept-line
+}
+
+zle -N my-history-incremental-search-backward
+
+# bindkey "^r" my-history-incremental-search-backward
+bindkey "^j" get-line
+# exit-search
+
+
+exit-search(){
+    zle forward-char
+    zle backward-char
+    bindkey "^m" accept-line
+}
+
+zle -N exit-search
+
+
+### misc
+
+bindkey "^[o" copy-prev-shell-word
+
+
+bash-forward-word(){
+     zle vi-forward-blank-word-end
+     zle forward-char
+}
+zle -N bash-forward-word
+
+
+if false;
+then
+bindkey '\ef' bash-forward-word
+bindkey '\ee' forward-word
+else
+bindkey '\ef' forward-word
+bindkey '\ee' bash-forward-word
+
+fi
+
+# I have a better solution for now!
+if false;
+then
+
+
+function xsel-kill-region () {
+zle kill-region;
+echo -n $CUTBUFFER | xsele -c
+};
+
+zle -N xsel-kill-region;
+bindkey '^W' xsel-kill-region
+
+fi

@@ -1,0 +1,37 @@
+
+
+
+/etc/zshenv
+  --->  env   For compatibility w/  bash  -> profile.env  for gentoo !!
+
+
+ $ZDOTDIR/.zshenv
+
+login:
+=======
+  /etc/zprofile
+  $ZDOTDIR/.zprofile.
+
+
+su:
+====
+does not invoke  /etc/zshenv !!  Why not?
+
+
+interactive ->
+ /etc/zshrc
+ $ZDOTDIR/.zshrc
+
+
+
+ login
+ =====
+ /etc/zlogin
+  $ZDOTDIR/.zlogin
+
+
+
+EXIT:
+ $ZDOTDIR/.zlogout
+ /etc/zlogout
+ 

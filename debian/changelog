@@ -1,0 +1,18 @@
+mmc-zsh (1.2) maverick; urgency=low
+
+  * kill-hook, run-help-p4
+
+ -- Michal Maruska <mmaruska@gmail.com>  Mon, 07 Feb 2011 10:53:45 +0100
+
+mmc-zsh (1.1) lucid; urgency=low
+
+  * public release (to PPA)
+
+ -- Michal Maruska <mmaruska@gmail.com>  Wed, 23 Jun 2010 22:20:43 +0300
+
+mmc-zsh (1-1) unstable; urgency=low
+
+  * Initial release 
+
+ -- Michal Maruska <michal@ruska.it>  Tue, 06 Nov 2007 17:57:36 +0100
+
