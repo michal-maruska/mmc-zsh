@@ -57,3 +57,8 @@ fi
 fpath+=/usr/share/zsh/site-functions/Misc
 autoload -Uz run-help-mygit-buildpackage
 autoload -Uz run-help-git
+
+
+#from kill-hook
+fpath+=/usr/share/zsh/site-functions
+autoload -Uz kill_region_hook
