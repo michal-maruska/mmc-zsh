@@ -1,0 +1,14 @@
+# to be sourced!!!
+#! /usr/bin/zsh -f
+
+zload_file ()
+{
+    file=$1
+ # TEMPFILE=/tmp/zsh-recipe
+    coproc tac $file
+    while read line;
+    do
+	echo pushing $line
+	builtin print -z $line
+    done  <& p
+}

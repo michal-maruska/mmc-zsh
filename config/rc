@@ -627,3 +627,4 @@ bindkey '\e[93~' kill-with-spaces
 bindkey '\e[96~' kill-with-spaces
 
 
+autoload zload-file
