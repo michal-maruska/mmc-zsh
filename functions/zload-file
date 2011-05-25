@@ -4,7 +4,6 @@
 zload_file ()
 {
     file=$1
- # TEMPFILE=/tmp/zsh-recipe
     coproc tac $file
     while read line;
     do
