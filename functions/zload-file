@@ -1,13 +1,17 @@
 # to be sourced!!!
 #! /usr/bin/zsh -f
 
-zload_file ()
+zload-file ()
 {
     file=$1
-    coproc tac $file
+    setopt nomonitor
+    coproc tac $file &!
     while read line;
     do
-	echo pushing $line
+	# if $verbose; then echo pushing $line;fi
 	builtin print -z $line
     done  <& p
+    wait
+    # sorry:
+    setopt monitor
 }
