@@ -1,3 +1,10 @@
+mmc-zsh (1.3) maverick; urgency=low
+
+  * help functions for 2 git & mygit-build..
+  * kill-hook autoload
+
+ -- Michal Maruska <mmaruska@gmail.com>  Tue, 24 May 2011 01:58:19 +0200
+
 mmc-zsh (1.2) maverick; urgency=low
 
   * kill-hook, run-help-p4
