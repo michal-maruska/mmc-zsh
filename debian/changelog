@@ -1,3 +1,9 @@
+mmc-zsh (1.4.1) maverick; urgency=low
+
+  * fix zload-file (autoloading)
+
+ -- Michal Maruska <mmaruska@gmail.com>  Wed, 25 May 2011 19:30:05 +0200
+
 mmc-zsh (1.4) maverick; urgency=low
 
   * zload-file
