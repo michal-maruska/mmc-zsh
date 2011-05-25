@@ -628,4 +628,4 @@ bindkey '\e[96~' kill-with-spaces
 
 
 # -k -z  ksh-style: (evaluate)
-autoload -k zload-file
+autoload -z zload-file
