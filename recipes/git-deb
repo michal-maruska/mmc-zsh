@@ -1,4 +1,0 @@
-git-dch  -R --since
-git add debian/changelog; git commit -m release
-mygit-buildpackage --git-tag && debi --debs-dir ../build-area/
-mygit-buildpackage -S && debrelease -S  --debs-dir=../build-area  --dput
