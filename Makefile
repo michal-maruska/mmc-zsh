@@ -16,6 +16,8 @@ install:
 	for file in keys/*; do $(INSTALL) -D $$file  $(DESTDIR)$(topdir)/; done
 	for file in config/*; do $(INSTALL) -D $$file  $(DESTDIR)$(topdir)/; done
 
+	$(INSTALL) -d $(DESTDIR)$(topdir)/recipes
+	for file in recipes/*; do $(INSTALL) -D $$file  $(DESTDIR)$(topdir)/; done
 clean:
 
 .phony: all install clean
