@@ -94,9 +94,9 @@ hosts=$(hostname)
 ###  Special (zsh) functions
 ## Period ... update 
 PERIOD=60
-periodic (){
+function periodic (){
 #    echo "running periodic"
-    ali				#  this is an alias !!!
+#    ali				#  this is an alias !!!
     rehash -f
 }
 
