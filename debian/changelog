@@ -1,3 +1,9 @@
+mmc-zsh (1.4.4) oneiric; urgency=low
+
+  * moving recipes to Prefences
+
+ -- Michal Maruska <mmaruska@gmail.com>  Tue, 22 Nov 2011 00:54:10 +0100
+
 mmc-zsh (1.4.3) maverick; urgency=low
 
   * recipes
