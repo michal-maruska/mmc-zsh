@@ -93,12 +93,15 @@ zle -N backward-to-/
 zle -N forward-to-/
 
 
-bindkey "" backward-to-space
-bindkey "" forward-to-space
+bindkey "\e^B" backward-to-space
+bindkey "\e^F" forward-to-space
 
-bindkey "/" forward-to-/
-bindkey "\\" backward-to-/
-bindkey "+" backward-to-/
+
+bindkey "\e/" forward-to-/
+
+# and
+bindkey "\e\\" backward-to-/
+bindkey "\e+" backward-to-/
 
 # [ "${BUFFER[$CURSOR-1,$CURSOR]}" = '\ ' ]
 # bindkey '\eb' miciah-backward-word
@@ -172,10 +175,10 @@ kill-backward-to-/(){
 
 bindkey "^[*" kill-to-/
 bindkey "^[<" kill-backward-to-/
-bindkey "^k" kill-to-/
-bindkey "k" kill-with-spaces
+bindkey "\e^k" kill-to-/
+bindkey "\ek" kill-with-spaces
 
-#bindkey "" undo
+#bindkey "^Z undo
 
 
 
@@ -188,7 +191,7 @@ bindkey "k" kill-with-spaces
 bindkey "^Xh" kill-with-spaces
 bindkey "^X^h" backward-kill-word
 bindkey "^X^h" backward-kill-word
-#bindkey "" kill-with-spaces
+#bindkey "\e^H kill-with-spaces
 
 ###   failed attempt to have a 'dead' key which stops the isearch. sort-of "C-m" in isearch in emacs.
 my-history-incremental-search-backward()
