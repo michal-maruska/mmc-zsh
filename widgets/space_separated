@@ -98,6 +98,8 @@ bindkey "\e^F" forward-to-space
 
 
 bindkey "\e/" forward-to-/
+#bindkey "^X/" history-search-backward
+bindkey "^\^" history-search-backward
 
 # and
 bindkey "\e\\" backward-to-/
