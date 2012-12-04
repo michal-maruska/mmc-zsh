@@ -5,19 +5,20 @@
 
 if [ $TERM = rxvt ]
 then
-# only if Under rxvt!
-echo -ne '\e[?66l'
-
-# (control) backspace is control-h or control-?
-# rxvt backspace:
-echo -ne '\e[?67h'
+    # only if Under rxvt!
+    echo -ne '\e[?66l'
+    # (control) backspace is control-h or control-?
+    # rxvt backspace:
+    echo -ne '\e[?67h'
 fi
 
 
-# configure (kernel) PTY:
+
+# Configure (kernel) PTY, how Shell should keep it:
 ttyctl -u
+# CHAR will redraw the current line
 stty rprnt '^T'
-# freeze now:
+# freeze back:
 ttyctl -f
 
 
@@ -26,23 +27,8 @@ ttyctl -f
 # for compatibility w/ bash:
 # problem on Debian:
 if [ -z "$MODULE_PATH" ];
-then 
-    MODULE_PATH=/usr/lib/zsh/${ZSH_VERSION}/
-fi
-
-
-on_gentoo()
-{
-  [ -d /var/db/edb ]
-}
-
-# Gentoo screwed the installation!
-if on_gentoo;
 then
-for ((i=0;i<$#fpath;i++))
-{
-    fpath[$i]=${fpath[$i]#/var/tmp/portage/zsh-${ZSH_VERSION}/image/}
-}
+    MODULE_PATH=/usr/lib/zsh/${ZSH_VERSION}/
 fi
 
 
@@ -53,8 +39,7 @@ source ${MYZSHDIR}/functions
 my_source /etc/profile
 
 ## Hack !
-if under_xterm; then  relax
-else
+if ! under_xterm; then
     setterm -blank 5 -powersave on -cursor on -linewrap on -repeat on -blink off  -store
 fi
 
@@ -92,7 +77,7 @@ hosts=$(hostname)
 
 
 ###  Special (zsh) functions
-## Period ... update 
+## Period ... update
 PERIOD=60
 function periodic (){
 #    echo "running periodic"
@@ -120,7 +105,7 @@ DIRSTACKSIZE=20
 
 
 # Watch for my friends
-#watch=( $(<~/.friends) )       # watch for people in .friends file
+# watch=( $(<~/.friends) )       # watch for people in .friends file
 watch=(postgres beta root@linux1 mmc@linux1)                   # watch for everybody but me
 watch=postgres:beta:root@linux1:mmc@linux1
 LOGCHECK=300                    # check every 5 min for login/logout activity
@@ -133,7 +118,7 @@ unsetopt AUTO_REMOVE_SLASH
 # globdots:   * != .*
 # notify  pushdtohome  autolist
 # setopt   correctall  recexact longlistjobs
-# setopt   autoresume   
+# setopt   autoresume
 # setopt    pushdminus extendedglob rcquotes mailwarning
 # unsetopt bgnice autoparamslash
 
@@ -161,21 +146,21 @@ unsetopt AUTO_REMOVE_SLASH
 ###  mmc:
 ## Keyboard
 #bindkey '^-' undo
-bindkey "m" set-mark-command
+bindkey "\em" set-mark-command
 bindkey "^j" accept-and-infer-next-history
-bindkey "/" history-beginning-search-backward
+bindkey "\e/" history-beginning-search-backward
 
 
 
-bindkey "i" complete-word
+bindkey "\ei" complete-word
 bindkey "^i" expand-or-complete-prefix
 
 
-# this had problems!!  
-# bindkey "^" history-beginning-search-backward
+# this had problems!!
+# bindkey "\e^" history-beginning-search-backward
 
-bindkey "|" history-beginning-search-backward
-## vi
+bindkey "\e|" history-beginning-search-backward
+## \evi
 bindkey "^xH" describe-key-briefly
 bindkey "^Xk" describe-key-briefly
 
@@ -183,29 +168,29 @@ bindkey "^Xk" describe-key-briefly
 bindkey " " magic-space
 
 # bindkey "^-" undo
-bindkey "e" expand-or-complete
-bindkey "@" set-mark-command
+bindkey "\ee" expand-or-complete
+bindkey "\e@" set-mark-command
 
 
 
 #bindkey "\C- " expand-or-complete
 #bindkey "^ " expand-or-complete      ... 't was stupid
 bindkey "\M- " expand-or-complete
-bindkey " " expand-or-complete
-# bindkey "c" capitalize-word
+bindkey "\e " expand-or-complete
+# bindkey "\ec" capitalize-word
 
 #bindkey "\C-i" kill-line
 #bindkey "\C-k" expand-or-complete
 
 
 #bindkey '^-' undo
-bindkey 'r' redisplay
+bindkey '\er' redisplay
 #&& bindkey -me
 
-## stty pass8 && 
+## stty pass8 &&
 
 bindkey -s  "\M-OQ" "rsh -l postgres linux1"
-bindkey "\M-^I" reverse-menu-complete 
+bindkey "\M-^I" reverse-menu-complete
 #bindkey -s "\M- " '/'
 #bindkey -s "\M- " '/'
 bindkey "^u" universal-argument
@@ -215,19 +200,19 @@ bindkey "\M-^k" kill-whole-line
 #bindkey "^," backward-delete-char
 
 
-# bindkey "" backward-kill-word
-# bindkey "h" run-help
-bindkey "h" backward-kill-word
-bindkey "" run-help
-bindkey "j" run-help
-bindkey "r" run-help
+# bindkey "\e^H backward-kill-word
+# bindkey "\eh" run-help
+bindkey "\eh" backward-kill-word
+bindkey "\e^H" run-help
+bindkey "^Xj" run-help
+bindkey "^Xr" run-help
 
 
 # Meta:
-bindkey "" kill-backward-with-spaces
+bindkey "\e^H" kill-backward-with-spaces
 # Control
 bindkey "^?" backward-kill-word
-# bindkey "[95~" backward-kill-word
+# bindkey "\e[95~" backward-kill-word
 
 
 # rxvt delete:
@@ -263,7 +248,7 @@ zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
 # allow one error for every three characters typed in approximate completer
 zstyle -e ':completion:*:approximate:*' max-errors \
     'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
-    
+
 # insert all expansions for expand completer
 zstyle ':completion:*:expand:*' tag-order all-expansions
 
@@ -301,9 +286,9 @@ typeset ZLS_COLORS=$LS_COLORS
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # wiki
-zstyle ':completion:*:*:kill:*' menu yes select 
+zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*' force-list always
-zstyle ':completion:*:rm:*' ignore-line yes  
+zstyle ':completion:*:rm:*' ignore-line yes
 
 ### line editing:
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
@@ -350,10 +335,10 @@ ZBEEB='\e[?5l\e[?5h'
 setopt BEEP
 setopt LIST_BEEP
 
-#zle -C all-matches complete-word _generic                                                
-#zle -C match-word complete-word _generic                                                 
-#bindkey '^Xx' all-matches                                                                
-#bindkey '\e*' match-word 
+#zle -C all-matches complete-word _generic
+#zle -C match-word complete-word _generic
+#bindkey '^Xx' all-matches
+#bindkey '\e*' match-word
 
 zstyle ':completion:all-matches::::' completer _all_matches _complete
 zstyle ':completion:all-matches:*' old-matches true
@@ -380,9 +365,6 @@ zstyle ':completion:*' max-errors 3
 zstyle ':completion:*' menu select=1
 # style ':completion:*:processes' command 'ps -au$USER'
 
-# autoload -U compinit compinit
-# echo "/etc/zsh/zshrc"
-
 source ${MYZSHDIR}/background
 source ${MYZSHDIR}/subst
 source ${MYZSHDIR}/fcd
@@ -395,7 +377,7 @@ source ${MYZSHDIR}/fcd
 
 
 
-# complete after alias 
+# complete after alias
 #setopt nocompletealiases
 
 ## run for Every _interactive_  Zsh session
@@ -408,8 +390,9 @@ source ${MYZSHDIR}/fcd
 ### The following lines were added by compinstall
 _compdir=/usr/share/zsh/functions/Core
 [[ -z $fpath[(r)$_compdir] ]] && fpath=($fpath $_compdir)
-autoload -U compinit
-compinit
+
+#autoload -U compinit
+#compinit
 # End of lines added by compinstall
 
 # echo zshrc
@@ -440,7 +423,7 @@ cvsrm(){
 #
 # .zshrc - customisations for the all-powerful shell
 #
-# the latest copy of this file can be found at 
+# the latest copy of this file can be found at
 #   http://repose.cx/conf
 #
 
@@ -488,11 +471,11 @@ export HISTSIZE=5000
 export SAVEHIST=5000
 # export HISTFILE=~/.zsh_history
 setopt hist_ignore_dups        # ignore same commands run twice+
-setopt appendhistory           # don't overwrite history 
+setopt appendhistory           # don't overwrite history
 
 
 # this is defined in ~/.bin/e now
-# 
+#
 # i have gnuclient set to load files in my current emacs buffer, so i'd like to
 # jump to it afterwards. i use a program "e" to edit files in this manner.
 # e() {
@@ -565,7 +548,7 @@ zle -N run-help-pinfo
 
 bindkey '^xt' run-help-pinfo
 
-bindkey '' undo
+bindkey '^_' undo
 
 zstyle -e ':completion:*' completer '[[ ${BUFFER%% *} = cd ]] && reply=(_complete _correct _approximate) || reply=(_complete)'
 # "Completion System Configurationn"
