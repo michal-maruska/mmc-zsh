@@ -1,0 +1,3 @@
+# to be appended to /etc/magic
+#
+0 string #autoload Zsh shell
