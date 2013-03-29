@@ -1,3 +1,5 @@
+# -*-sh-*-
+
 ### i rebind  M-h etc  to kill WHOLE argument
 # sometimes i still need this (detail):
 
@@ -6,7 +8,7 @@
 
 
 ## todo:  vi-backward-word
-##      is ther 
+##      is ther
 
 
 
