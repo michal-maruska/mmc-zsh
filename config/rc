@@ -629,3 +629,5 @@ bindkey '\e[96~' kill-with-spaces
 
 # -k -z  ksh-style: (evaluate)
 autoload -z zload-file
+
+zstyle ':completion:*:default'  list-colors ${(s.:.)LS_COLORS}
