@@ -1,0 +1,12 @@
+#compdef gpg-agent
+
+
+# local context state line
+
+_arguments  -s -S \
+    '--version' \
+    '--help' \
+    '--dump-options' \
+    '--server' \
+    '--daemon: :->cmdline' \
+    '--options: :->file' && return 0
