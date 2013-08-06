@@ -9,4 +9,33 @@ _arguments  -s -S \
     '--dump-options' \
     '--server' \
     '--daemon: :->cmdline' \
-    '--options: :->file' && return 0
+    \
+    '--verbose' \
+    '--quit' \
+    '--batch' \
+    '--no-detach' \
+    '--no-grab' \
+    '--keep-tty' '--keep-display' '--enable-ssh-support' \
+    '--default-cache-ttl: :->seconds' \
+    '--default-cache-ttl-ssh: :->seconds' \
+    '--pinentry-program: :->cmd' \
+    '--write-env-file: :->file' \
+    '--options: :->file' \
+    && return 0
+
+case $state in
+    file)
+	_files -g 'meta/machines/*conf(:t:s/.conf/)' && return 0
+	;;
+    cmd)
+	# from $PATH
+	_files -g 'meta/machines/*conf(:t:s/.conf/)' && return 0
+	;;
+    cmdline)
+	# compadd "$@" VERBOSE DEBUG OPROFILE MAKE_JOBS FDT_FLAVOR NAV2 RELEASE
+    return 0
+    ;;
+esac
+
+
+return 1
