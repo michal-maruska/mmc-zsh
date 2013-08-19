@@ -62,3 +62,60 @@ autoload -Uz run-help-git
 #from kill-hook
 fpath+=/usr/share/zsh/site-functions
 autoload -Uz kill_region_hook
+
+
+
+# From maruska-preference:
+
+function hist()
+{
+    grep -r $1 ~/.zsh_history
+}
+
+function cd ()
+{
+    if  [[ $# -gt 0 ]] && [[ ! "$1" = "-" ]] && [[  -f "$1" ]]; then
+	builtin cd $1:h
+    else
+#     echo "not a file"
+	builtin cd $*
+    fi
+}
+
+# todo: from a specific directory. And provide common recipes.
+alias zl="zload-file /usr/share/maruska/recipes/"
+
+function prehistory()
+{
+    HISTFILE=$1
+    fc -R
+}
+
+function rehistory()
+{
+    HISTFILE=$1
+    #/home/michal/.zsh_history/git-xorg
+    fc -W
+}
+
+
+
+
+# Clint helped
+alias ,="subst"
+alias ,,=", ${activity_dir}zsh/snippet"
+# fixme: only if changed  between now, and last invokation/command?
+[ -x  ${activity_dir}/zsh/subst ] && .  ${activity_dir}/zsh/subst
+
+
+PERIOD=60
+function periodic ()
+{
+#    echo "running periodic"
+    if [ -r ~/.aliases ]
+    then
+	source ~/.aliases
+    fi
+    rehash
+}
+
