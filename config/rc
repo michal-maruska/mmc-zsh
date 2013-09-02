@@ -77,11 +77,12 @@ typeset -U path cdpath fpath manpath
 ###  Special (zsh) functions
 ## Period ... update
 PERIOD=60
-function periodic (){
-#    echo "running periodic"
-#    ali				#  this is an alias !!!
-    rehash -f
-}
+# but I have periodic in ./functions/functions !
+# function periodic (){
+# #    echo "running periodic"
+# #    ali				#  this is an alias !!!
+#     rehash -f
+# }
 
 
 
