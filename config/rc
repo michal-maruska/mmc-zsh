@@ -122,6 +122,15 @@ unsetopt AUTO_REMOVE_SLASH
 # setopt    pushdminus extendedglob rcquotes mailwarning
 # unsetopt bgnice autoparamslash
 
+# 2003-06-29
+setopt nohistbeep
+setopt cshjunkiehistory
+setopt extendedhistory
+setopt histignoredups
+setopt histverify
+setopt incappendhistory
+
+
 # # Autoload zsh modules when they are referenced
 # zmodload -a zsh/stat stat
 # zmodload -a zsh/zpty zpty
@@ -557,13 +566,6 @@ zstyle  ':completion:*:cvs-add:*' file-sort modification
 
 
 
-# 2003-06-29
-setopt nohistbeep
-setopt cshjunkiehistory
-setopt extendedhistory
-setopt histignoredups
-setopt histverify
-setopt incappendhistory
 
 
 
