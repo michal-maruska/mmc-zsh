@@ -306,18 +306,21 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 ### History
 typeset HISTSIZE=20000
-# HISTSIZE=200
-HISTSIZE=1000
-#SAVEHIST=200
-SAVEHIST=1000
 HISTFILE=~/.zsh_history/$HOST$(echo $TTY| sed -e 's/\//_/g')
 # HISTFILE=~/.history
+# history related stuff.
+export SAVEHIST=5000
+# export HISTFILE=~/.zsh_history
+setopt hist_ignore_dups        # ignore same commands run twice+
+setopt appendhistory           # don't overwrite history
+
+
+
 
 
 #export HISTIGNORE=\&
 setopt EXTENDED_HISTORY
 #typeset EXTENDED_HISTORY=1
-#texport EXTENDED_HISTORY=1
 
 
 
@@ -475,13 +478,6 @@ setopt printexitvalue          # alert me if something's failed
 # for kill-word, etc.
 export WORDCHARS=''
 
-
-# history related stuff.
-export HISTSIZE=5000
-export SAVEHIST=5000
-# export HISTFILE=~/.zsh_history
-setopt hist_ignore_dups        # ignore same commands run twice+
-setopt appendhistory           # don't overwrite history
 
 
 # this is defined in ~/.bin/e now
