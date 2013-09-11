@@ -1,3 +1,17 @@
+mmc-zsh (1.7) release; urgency=low
+
+  * format & avoid control chars.
+  * format & avoid control chars
+  * bind  history-search-backward  somewhere!
+  * Enhancement for file(1)/magic(5) to detect _zsh-functions
+  * moving around?
+  * use zsh
+  * moving ??
+  * avoid repeating history-related config
+  * use list-colors
+
+ -- Michal Maruska <mmaruska@gmail.com>  Wed, 11 Sep 2013 22:53:27 +0200
+
 mmc-zsh (1.6) release; urgency=low
 
   * mark a file as shell for Emacs
