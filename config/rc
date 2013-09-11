@@ -561,6 +561,8 @@ zstyle -e ':completion:*' completer '[[ ${BUFFER%% *} = cd ]] && reply=(_complet
 
 zstyle  ':completion:*:cvs-add:*' file-sort modification
 
+zstyle ':completion:*:default'  list-colors ${(s.:.)LS_COLORS}
+
 
 
 
