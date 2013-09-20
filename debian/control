@@ -2,7 +2,7 @@ Source: mmc-zsh
 Section: shells
 Priority: extra
 Maintainer: Michal Maruska <mmaruska@gmail.com>
-Build-Depends: cdbs, debhelper (>= 5), zsh
+Build-Depends: debhelper (>= 7), zsh
 Standards-Version: 3.7.2
 
 Package: mmc-zsh
