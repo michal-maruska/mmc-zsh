@@ -616,3 +616,20 @@ bindkey '\e[96~' kill-with-spaces
 autoload -z zload-file
 
 zstyle ':completion:*:default'  list-colors ${(s.:.)LS_COLORS}
+
+# For Sawfish WM:
+wid_asigned=n
+# precmd
+assign_wid_maybe()
+{
+    # match .. prints... either position?  or the matched string!
+    if [ $wid_asigned != y -a  "$(expr match $PWD  ".*\(mp3\|youtube\)")" != "" ];
+    then
+	wid_asigned=y
+	if [ -n "${WINDOWID-}" ]; then
+	    sawfish-client -e "(bind-wid-to-window \"s\" (get-window-by-id $WINDOWID))"
+	fi
+    fi
+}
+typeset -a chpwd_functions
+chpwd_functions+=(assign_wid_maybe)
