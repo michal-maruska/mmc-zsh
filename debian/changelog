@@ -1,3 +1,11 @@
+mmc-zsh (1.8) release; urgency=medium
+
+  * remove duplicate periodic() from rc. It's in "functions"
+  * Migrate to dh (from cdbs)
+  * Setup Wid through Sawfish inside certain directories
+
+ -- Michal Maruska <mmaruska@gmail.com>  Sun, 06 Apr 2014 21:06:23 +0000
+
 mmc-zsh (1.7) release; urgency=low
 
   * format & avoid control chars.
