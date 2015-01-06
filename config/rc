@@ -31,8 +31,7 @@ then
     MODULE_PATH=/usr/lib/zsh/${ZSH_VERSION}/
 fi
 
-
-MYZSHDIR=/usr/share/zsh/site-functions/
+: ${MYZSHDIR=/usr/share/zsh/site-functions/}
 
 source ${MYZSHDIR}/functions
 
