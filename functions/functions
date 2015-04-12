@@ -1,3 +1,5 @@
+# -*-sh-*-
+
 # these functions _must_ be portable !!!
 
 
@@ -22,11 +24,18 @@ relax(){
 	echo -n ""
 }
 
+# todo: remove
 my_source() {
    #echo "source $1...."
    [[ -e $1 ]] && source $1
    # source $1
    #echo "\t...end (source $1)"
+}
+
+# source if exists:
+possibly_source()
+{
+    [ -r $1 ] && source $1
 }
 
 
@@ -117,5 +126,14 @@ function periodic ()
 	source ~/.aliases
     fi
     rehash
+}
+
+append_to_path()
+{
+    # append_to_array path $1
+    if [[ ${path[(i)$1]} = $(( ${#path} + 1 )) ]];
+    then
+	path=($path $1)
+    fi
 }
 
