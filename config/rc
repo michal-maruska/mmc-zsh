@@ -280,23 +280,12 @@ source ${MYZSHDIR}/background
 source ${MYZSHDIR}/subst
 source ${MYZSHDIR}/fcd
 
-
-
-
-
 #  [16 dic 03] from ~/...
-
-
 
 # complete after alias
 #setopt nocompletealiases
 
 ## run for Every _interactive_  Zsh session
-
-
-
-
-
 
 ### The following lines were added by compinstall
 _compdir=/usr/share/zsh/functions/Core
@@ -461,13 +450,7 @@ zstyle  ':completion:*:cvs-add:*' file-sort modification
 
 zstyle ':completion:*:default'  list-colors ${(s.:.)LS_COLORS}
 
-
-
-
-
-
 zstyle ":incremental" stop-keys "^M"
-
 
 # -k -z  ksh-style: (evaluate)
 autoload -z zload-file
