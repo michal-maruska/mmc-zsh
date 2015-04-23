@@ -635,3 +635,5 @@ typeset -a chpwd_functions
 chpwd_functions+=(assign_wid_maybe)
 
 possibly_source $MYZSHDIR/task
+
+possibly_source $MYZSHDIR/user-functions
