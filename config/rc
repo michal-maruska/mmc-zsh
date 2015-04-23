@@ -36,7 +36,7 @@ MYZSHDIR=/usr/share/zsh/site-functions/
 
 source ${MYZSHDIR}/functions
 
-my_source /etc/profile
+possibly_source /etc/profile
 
 ## Hack !
 if ! under_xterm; then
