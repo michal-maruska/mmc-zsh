@@ -1,0 +1,14 @@
+
+# "load" a special history?
+
+if [ ! -d $TASK ]
+then
+    HISTFILE=~/.zsh_history/$TASK
+    echo "your HISTFILE is $HISTFILE"
+
+    if [ -x  ~/.tasks/${TASK}.rc ];
+    then
+	source ~/.tasks/${TASK}.rc
+    fi
+fi
+
