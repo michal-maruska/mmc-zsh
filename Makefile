@@ -11,6 +11,7 @@ install:
 	$(INSTALL) -d $(DESTDIR)$(topdir)/
 	$(INSTALL) -d $(DESTDIR)$(topdir)/Misc
 	for file in widgets/*; do $(INSTALL) -D $$file  $(DESTDIR)$(topdir)/; done
+	# mmc: note that all files into top-directory:
 	foreach file  (functions/*(.)){ $(INSTALL) -D $$file  $(DESTDIR)$(topdir)/}
 	foreach file  (functions/Misc/*(.)){ $(INSTALL) -D $$file  $(DESTDIR)$(topdir)/Misc/ }
 
