@@ -1,3 +1,17 @@
+mmc-zsh (2.0) release; urgency=medium
+
+  * consolidate new functions: possibly_source, append_to_path
+  * Task: new feature, not used (much).
+  * migrate to possibly_source
+  * new: user-functions
+  * Split keybindings (& start using terminfo)
+  * fcd: reformat
+  * empty lines
+  * make rc work in guest-mode (no root rights, only private homedir)
+  * comment
+
+ -- Michal Maruska <mmaruska@gmail.com>  Sat, 25 Apr 2015 00:03:29 +0200
+
 mmc-zsh (1.8) release; urgency=medium
 
   * remove duplicate periodic() from rc. It's in "functions"
