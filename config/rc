@@ -3,7 +3,7 @@
 # how to detect RXVT?
 # numblock keys !
 
-if [ $TERM = rxvt ]
+if [ "$TERM" = rxvt ]
 then
     # only if Under rxvt!
     echo -ne '\e[?66l'
@@ -39,7 +39,9 @@ possibly_source /etc/profile
 
 ## Hack !
 if ! under_xterm; then
-    setterm -blank 5 -powersave on -cursor on -linewrap on -repeat on -blink off  -store
+    if [ -n "$TERM" ]; then
+	setterm -blank 5 -powersave on -cursor on -linewrap on -repeat on -blink off  -store
+    fi
 fi
 
 
