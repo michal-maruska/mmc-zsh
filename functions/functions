@@ -78,7 +78,7 @@ autoload -Uz kill_region_hook
 
 function hist()
 {
-    grep -r $1 ~/.zsh_history
+    grep -a -r $1 ~/.zsh_history
 }
 
 function cd ()
