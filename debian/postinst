@@ -1,0 +1,12 @@
+#! /bin/zsh
+
+# register:
+cat >> /etc/zsh/zshrc <<EOF
+source /usr/share/zsh/site-functions/rc
+EOF
+
+
+cat >> /etc/zsh/zshenv  <<EOF
+source /etc/env
+
+EOF

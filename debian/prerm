@@ -1,0 +1,6 @@
+#! /bin/zsh
+
+# unregister:
+sed -i -e '\|^source /usr/share/zsh/site-functions/rc$|d' /etc/zsh/zshrc
+
+sed -i -e '\|^source /etc/env$|d' /etc/zsh/zshenv
