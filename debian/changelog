@@ -1,3 +1,10 @@
+mmc-zsh (2.3) release; urgency=medium
+
+  * source /etc/profile only after defining histfile.
+  * Add debian/postinst,prerm to register my zsh customization with system Zsh.
+
+ -- Michal Maruska <mmaruska@gmail.com>  Wed, 26 Dec 2018 00:05:25 +0100
+
 mmc-zsh (2.2) release; urgency=medium
 
   * hist: Force grep to use history files are textual!
