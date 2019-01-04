@@ -21,7 +21,7 @@ under_xterm(){
 }
 
 relax(){
-	echo -n ""
+    echo -n ""
 }
 
 # todo: remove
@@ -84,10 +84,10 @@ function hist()
 function cd ()
 {
     if  [[ $# -gt 0 ]] && [[ ! "$1" = "-" ]] && [[  -f "$1" ]]; then
-	builtin cd $1:h
+        builtin cd $1:h
     else
 #     echo "not a file"
-	builtin cd $*
+        builtin cd $*
     fi
 }
 
@@ -123,7 +123,7 @@ function periodic ()
 #    echo "running periodic"
     if [ -r ~/.aliases ]
     then
-	source ~/.aliases
+        source ~/.aliases
     fi
     rehash
 }
@@ -133,7 +133,6 @@ append_to_path()
     # append_to_array path $1
     if [[ ${path[(i)$1]} = $(( ${#path} + 1 )) ]];
     then
-	path=($path $1)
+        path=($path $1)
     fi
 }
-
