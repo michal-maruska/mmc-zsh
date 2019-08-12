@@ -131,11 +131,13 @@ if under_xterm;
     then
         sudo=""
     else
-    sudo="${SUDO_USER}->"
-    if [[ $SUDO_COMMAND =~ "^/usr/sbin/chroot" ]]
-    then
-	chroot="${SUDO_COMMAND##/usr/sbin/chroot }@@"
-    else
+        sudo="${SUDO_USER}->"
+        if [[ $SUDO_COMMAND =~ "^/usr/sbin/chroot" ]]
+        then
+	    chroot="${SUDO_COMMAND##/usr/sbin/chroot }@@"
+        else
+	    chroot=""
+        fi
     fi
     # container:
     code=$(lsb_release --short --codename)
