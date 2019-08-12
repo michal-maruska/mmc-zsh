@@ -136,8 +136,10 @@ if under_xterm;
     then
 	chroot="${SUDO_COMMAND##/usr/sbin/chroot }@@"
     else
-	chroot=""
     fi
+    # container:
+    code=$(lsb_release --short --codename)
+        chroot="($code)"
     fi
     # "" ... parameter and command substitution occur,
     # $'' ??
