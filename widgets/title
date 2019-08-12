@@ -143,7 +143,7 @@ if under_xterm;
     # $'' ??
     # %n username,                          %m hostname        %f stop colour
     #    %B bold %F fg color
-    PROMPT=$'%B%F{green}${sudo}%n@%F{yellow}${chroot}%m:%F{red}%5c\ \$NO_BGJOBS%f%U%?%u$ %_%{\e]2;zsh ${sudo}%n@${chroot}%m:$NO_BGJOBS%d%}%b'
+    PROMPT=$'%B%F{green}${sudo}%n@%F{blue}${chroot}%F{yellow}%m:%F{red}%5c\ \$NO_BGJOBS%f%U%?%u$ %_%{\e]2;zsh ${sudo}%n@${chroot}%m:$NO_BGJOBS%d%}%b'
 #    $'%{\e[1;33;40m%}%n@%{\e[1;32;40m%}%m:%{\e[01;31;40m%}%5c\ \$NO_BGJOBS%{\e[0m%}%U%?%u$ %_%{\e]2;zsh %n@%m:$NO_BGJOBS%d%}'
 
     RPS1="%B<%h %* %l%b\$NO_BGJOBS"
