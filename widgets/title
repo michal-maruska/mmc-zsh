@@ -141,6 +141,8 @@ if under_xterm;
     fi
     # container:
     code=$(lsb_release --short --codename)
+    if [ $code != "buster" ]
+    then
         chroot="($code)"
     fi
     # "" ... parameter and command substitution occur,
