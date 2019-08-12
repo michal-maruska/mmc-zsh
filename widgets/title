@@ -13,7 +13,7 @@
 # #\033]0;$USER:zsh $1\a
 # }
 
-# fi  
+# fi
 
 
 
@@ -125,11 +125,11 @@ if under_xterm;
 #
 # (red (hostname)
 #      (username)
-    setopt  PROMPT_SUBST
+    setopt PROMPT_SUBST
     # this contains the xterm title setting ?
     if [ -z ${SUDO_USER} ]
     then
-    sudo=""
+        sudo=""
     else
     sudo="${SUDO_USER}->"
     if [[ $SUDO_COMMAND =~ "^/usr/sbin/chroot" ]]
@@ -145,7 +145,7 @@ if under_xterm;
     #    %B bold %F fg color
     PROMPT=$'%B%F{green}${sudo}%n@%F{yellow}${chroot}%m:%F{red}%5c\ \$NO_BGJOBS%f%U%?%u$ %_%{\e]2;zsh ${sudo}%n@${chroot}%m:$NO_BGJOBS%d%}%b'
 #    $'%{\e[1;33;40m%}%n@%{\e[1;32;40m%}%m:%{\e[01;31;40m%}%5c\ \$NO_BGJOBS%{\e[0m%}%U%?%u$ %_%{\e]2;zsh %n@%m:$NO_BGJOBS%d%}'
-    
+
     RPS1="%B<%h %* %l%b\$NO_BGJOBS"
 
 
@@ -155,7 +155,6 @@ if under_xterm;
 else
 ##
     PROMPT=$'%{\e[1;33;40m%}%n@%m:%{\e[01;31;40m%}%5c\ '
-    
 fi
 
 
