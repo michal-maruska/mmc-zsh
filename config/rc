@@ -50,13 +50,6 @@ if ! under_xterm; then
 fi
 
 
-#### aliases
-# common aliases w/ bash:    ... but those for zsh are sourced !!!
-#source  /etc/preference/aliases
-#source  /etc/preference/COLORS.green
-
-
-
 #### Shell functions
 setenv() { typeset -x "${1}${1:+=}${(@)argv[2,$#]}" }  # csh compatibility
 freload() { while (( $# )); do; unfunction $1; autoload -U $1; shift; done }

@@ -1,0 +1,10 @@
+-*-outline-*-
+* Zsh on debian does not implement loading of 3rd party config files.
+So, see debian/postinst how we append into /etc/zsh/zshenv
+
+that sources the /etc/env file which is in the maruska-preference file.
+
+
+* /etc/zsh/zshrc
+here we are interactive, so load my widgets, here defined.
+from /usr/share/zsh/site-functions/rc
