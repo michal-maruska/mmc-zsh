@@ -1,4 +1,3 @@
-
 # "load" a special history?
 
 if [ ! -d $TASK ]
@@ -8,7 +7,6 @@ then
 
     if [ -x  ~/.tasks/${TASK}.rc ];
     then
-	source ~/.tasks/${TASK}.rc
+        source ~/.tasks/${TASK}.rc
     fi
 fi
-
