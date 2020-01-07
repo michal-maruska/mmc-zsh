@@ -1,6 +1,3 @@
-
-
-
 /etc/zshenv
   --->  env   For compatibility w/  bash  -> profile.env  for gentoo !!
 
@@ -34,4 +31,3 @@ interactive ->
 EXIT:
  $ZDOTDIR/.zlogout
  /etc/zlogout
- 
