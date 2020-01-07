@@ -3,6 +3,9 @@
 ## Copied from https://wiki.archlinux.org/index.php/Zsh#Key_bindings
 # create a zkbd compatible hash;
 # to add other keys to this hash, see: man 5 terminfo
+
+# mmc: use it locally!
+# For now it's in the cli environment: echo $#key
 typeset -A key
 
 key[Home]=${terminfo[khome]}
@@ -43,6 +46,63 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
 fi
 
 ########### End of the copy.
+# Arrows for Beta:
+
+if [[ $(id --user --name) = "beta" ]]
+then
+    # left, right
+    bindkey '\e[D' backward-char
+    bindkey '\e[C' forward-char
+
+
+    # Home, End
+    bindkey "\e[7~" beginning-of-line
+    bindkey "\e[8~" end-of-line
+
+    # Ctrl left, right
+    bindkey '\eOd' backward-word
+    bindkey '\eOc' bash-forward-word
+
+    # Meta  left right
+    bindkey '\e[\`2' backward-word
+    bindkey '\e[\`3' bash-forward-word
+
+
+    bindkey '\e[94~' kill-word
+
+    bindkey '\e[93~' backward-kill-word
+    bindkey '\e[93~' kill-with-spaces
+
+    bindkey '\e[96~' kill-with-spaces
+fi
+
+### Line editing:
+# rxvt delete:
+bindkey "^[[3~" delete-char-or-list
+bindkey -r "^[[3"
+# Meta:
+bindkey "^[^[[3~" kill-with-spaces
+#kill-to-/
+# Control
+bindkey "^[[3\^" kill-word
+# kill-word
+bindkey "\eh" backward-kill-word
+
+
+# Meta:
+bindkey "\e^H" kill-backward-with-spaces
+# Control
+bindkey "^?" backward-kill-word
+# bindkey "\e[95~" backward-kill-word
+
+bindkey "^w" kill-region
+bindkey "\M-^k" kill-whole-line
+#bindkey "^," backward-delete-char
+# bindkey "\e^H backward-kill-word
+
+# bindkey "\ec" capitalize-word
+#bindkey "\C-i" kill-line
+
 
 
 
@@ -57,49 +117,52 @@ fi
 # # bindkey -v               # vi key bindings
 
 # bindkey -e                 # emacs key bindings
-# bindkey ' ' magic-space    # also do history expansion on space
 # bindkey '^I' complete-word # complete on tab, leave expansion to _expand
 
 
 ###  mmc:
 ## Keyboard
 #bindkey '^-' undo
-bindkey "\em" set-mark-command
+
 # why do I need another one? C-space is enough!
+# bindkey "\em" set-mark-command
+# bindkey "\e@" set-mark-command
+
 
 bindkey "^j" accept-and-infer-next-history
 bindkey "\e/" history-beginning-search-backward
-
+bindkey "\e|" history-beginning-search-backward
 
 
 bindkey "\ei" complete-word
 bindkey "^i" expand-or-complete-prefix
+#bindkey "\C- " expand-or-complete
+#bindkey "^ " expand-or-complete      ... 't was stupid
+
+# never used:
+# bindkey "\M- " expand-or-complete
+# bindkey "\e " expand-or-complete
+
+bindkey "\ee" expand-or-complete
+bindkey "^X^I" expand-or-complete-prefix
+
+ bindkey ' ' magic-space    # also do history expansion on space
 
 
 # this had problems!!
 # bindkey "\e^" history-beginning-search-backward
 
-bindkey "\e|" history-beginning-search-backward
 ## \evi
-bindkey "^xH" describe-key-briefly
+# unused: bindkey "^xH" describe-key-briefly
 bindkey "^Xk" describe-key-briefly
 
-
-bindkey " " magic-space
+# bindkey "\e^H" run-help
+# bindkey "^Xj" run-help
+bindkey "^Xr" run-help
+# bindkey "\eh" run-help
 
 # bindkey "^-" undo
-bindkey "\ee" expand-or-complete
-bindkey "\e@" set-mark-command
 
-
-
-#bindkey "\C- " expand-or-complete
-#bindkey "^ " expand-or-complete      ... 't was stupid
-bindkey "\M- " expand-or-complete
-bindkey "\e " expand-or-complete
-# bindkey "\ec" capitalize-word
-
-#bindkey "\C-i" kill-line
 #bindkey "\C-k" expand-or-complete
 
 
@@ -109,77 +172,19 @@ bindkey '\er' redisplay
 
 ## stty pass8 &&
 
-bindkey -s  "\M-OQ" "rsh -l postgres linux1"
-bindkey "\M-^I" reverse-menu-complete
+if false;
+then
+    bindkey -s  "\M-OQ" "rsh -l postgres linux1"
+    bindkey "\M-^I" reverse-menu-complete
+fi
 #bindkey -s "\M- " '/'
 #bindkey -s "\M- " '/'
 bindkey "^u" universal-argument
 
-bindkey "^w" kill-region
-bindkey "\M-^k" kill-whole-line
-#bindkey "^," backward-delete-char
 
 
-# bindkey "\e^H backward-kill-word
-# bindkey "\eh" run-help
-bindkey "\eh" backward-kill-word
-bindkey "\e^H" run-help
-bindkey "^Xj" run-help
-bindkey "^Xr" run-help
-
-
-# Meta:
-bindkey "\e^H" kill-backward-with-spaces
-# Control
-bindkey "^?" backward-kill-word
-# bindkey "\e[95~" backward-kill-word
-
-
-# rxvt delete:
-bindkey "^[[3~" delete-char-or-list
-bindkey -r "^[[3"
-# Meta:
-bindkey "^[^[[3~" kill-with-spaces
-#kill-to-/
-# Control
-bindkey "^[[3\^" kill-word
-# kill-word
-
-
-
-bindkey "^X^I" expand-or-complete-prefix
 # bindkey -M menuselect '^M' send-break          # fails, disabled
 # bindkey "\M-v" menu-select
-
-
-
-# Arrows for Beta:
-
-# left, right
-bindkey '\e[D' backward-char
-bindkey '\e[C' forward-char
-
-
-# Home, End
-bindkey "\e[7~" beginning-of-line
-bindkey "\e[8~" end-of-line
-
-# Ctrl left, right
-bindkey '\eOd' backward-word
-bindkey '\eOc' bash-forward-word
-
-# Meta  left right
-bindkey '\e[\`2' backward-word
-bindkey '\e[\`3' bash-forward-word
-
-
-bindkey '\e[94~' kill-word
-
-bindkey '\e[93~' backward-kill-word
-bindkey '\e[93~' kill-with-spaces
-
-bindkey '\e[96~' kill-with-spaces
-
 
 
 autoload history-search-end
