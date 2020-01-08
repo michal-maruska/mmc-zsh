@@ -1,5 +1,3 @@
-
-
 ### Xterm title:
 
 # if under_xterm;
@@ -22,17 +20,17 @@ if false;
 # preexec hook shows command in title as it's running,
 # and precmd sets it to something else when it's done.
     case $TERM in
-	xterm*|screen*)
-	    preexec () {
-		export CURRENTCMD="$1"
-		print -Pn "\e]0;$1\a"
-	    }
-	    precmd () {
-		if [[ ! -z $CURRENTCMD ]]; then
-		    print -Pn "\e]0;($CURRENTCMD)\a"
-		fi
-	    }
-	    ;;
+        xterm*|screen*)
+            preexec () {
+                export CURRENTCMD="$1"
+                print -Pn "\e]0;$1\a"
+            }
+            precmd () {
+                if [[ ! -z $CURRENTCMD ]]; then
+                    print -Pn "\e]0;($CURRENTCMD)\a"
+                fi
+            }
+            ;;
     esac
 fi
 
@@ -69,16 +67,16 @@ preexec() {
 
        # Construct a command that will output the desired job number.
     case $cmd[1] in
-	fg) if (( $#cmd == 1 )); then
+        fg) if (( $#cmd == 1 )); then
                    # No arguments, must find the current job
-	    cmd=(builtin jobs -l %+)
-	    else
+            cmd=(builtin jobs -l %+)
+            else
                    # Replace the command name, ignore extra args.
-	    cmd=(builtin jobs -l $cmd[2])
-	    fi;;
-	%*) cmd=(builtin jobs -l $cmd[1]);; # Same as "else" above
-	*)  mytitle $cmd[1]:t "$cmd[2,-1]"    # Not resuming a job,
-	    return;;                        # so we're all done
+            cmd=(builtin jobs -l $cmd[2])
+            fi;;
+        %*) cmd=(builtin jobs -l $cmd[1]);; # Same as "else" above
+        *)  mytitle $cmd[1]:t "$cmd[2,-1]"    # Not resuming a job,
+            return;;                        # so we're all done
     esac
 
     local -A jt; jt=(${(kv)jobtexts})       # Copy jobtexts for subshell
@@ -86,8 +84,8 @@ preexec() {
        # Run the command, read its output, and look up the jobtext.
        # Could parse $rest here, but $jobtexts (via $jt) is easier.
     $cmd >>(read num rest
-	cmd=(${(z)${(e):-\$jt$num}})
-	mytitle $cmd[1]:t "$cmd[2,-1]") 2>/dev/null
+        cmd=(${(z)${(e):-\$jt$num}})
+        mytitle $cmd[1]:t "$cmd[2,-1]") 2>/dev/null
 }
 fi
 
@@ -134,9 +132,9 @@ if under_xterm;
         sudo="${SUDO_USER}->"
         if [[ $SUDO_COMMAND =~ "^/usr/sbin/chroot" ]]
         then
-	    chroot="${SUDO_COMMAND##/usr/sbin/chroot }@@"
+            chroot="${SUDO_COMMAND##/usr/sbin/chroot }@@"
         else
-	    chroot=""
+            chroot=""
         fi
     fi
     # container:
@@ -193,4 +191,3 @@ fi                              # false
 # screen ??
 # xterm: "]2;$1"
 # %0(w,domenica,)
-
