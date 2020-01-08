@@ -1,0 +1,30 @@
+unalias run-help >& /dev/null
+autoload run-help
+
+zle -N miciah-run-help;
+function miciah-run-help (){
+    buf="$BUFFER$RBUFFER";
+    run-help ${${buf##noglob }%% *};
+    zle .redisplay
+};
+
+# bindkey '\eh' miciah-run-help
+
+function caphuso_help (){
+    print 1;
+    run-help ${${BUFFER##[[:blank:]]#sudo#[[:blank:]]#}%% *}
+    print -z ${(q)BUFFER}
+    zle send-break
+};
+zle -N caphuso_help;
+
+
+function run-help-pinfo (){
+    mancmd=pinfo
+    buf="$BUFFER$RBUFFER";
+    run-help ${${buf##noglob }%% *};
+    #zle .run-help
+}
+
+zle -N run-help-pinfo
+bindkey '^xt' run-help-pinfo

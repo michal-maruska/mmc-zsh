@@ -1,5 +1,4 @@
-
-## Configure rxvt
+### Configure terminal -- rxvt
 # how to detect RXVT?
 # numblock keys !
 
@@ -12,14 +11,15 @@ then
     echo -ne '\e[?67h'
 fi
 
-
-
 # Configure (kernel) PTY, how Shell should keep it:
 ttyctl -u
 # CHAR will redraw the current line
 stty rprnt '^T'
 # freeze back:
 ttyctl -f
+
+### I want C-s to search, not stop !!!
+unsetopt FLOW_CONTROL
 
 
 # echo -n "/etc/zsh/zshrc"
@@ -33,21 +33,9 @@ fi
 : ${MYZSHDIR=/usr/share/zsh/site-functions/}
 source ${MYZSHDIR}/functions
 
-HISTFILE=~/.zsh_history/$HOST$(echo $TTY| sed -e 's/\//_/g')
 # only now I'm ready!
 # but beware: this sets prompt PS1...
 possibly_source /etc/profile
-
-
-
-
-
-## Hack !
-if ! under_xterm; then
-    if [ -n "$TERM" ]; then
-	setterm -blank 5 -powersave on -cursor on -linewrap on -repeat on -blink off  -store
-    fi
-fi
 
 
 #### Shell functions
@@ -69,45 +57,27 @@ typeset -U path cdpath fpath manpath
 # manpath=($X11HOME/man /usr/man /usr/lang/man /usr/local/man)
 # export MANPATH
 
-
-
-
-
 ###  Special (zsh) functions
 ## Period ... update
 PERIOD=60
 # but I have periodic in ./functions/functions !
 # function periodic (){
 # #    echo "running periodic"
-# #    ali				#  this is an alias !!!
+# #    ali   #  this is an alias !!!
 #     rehash -f
 # }
-
 
 
 ### Prompt && title etc.
 source  ${MYZSHDIR}/title
 
-
 # Some environment variables
-export MAIL=/var/spool/mail/$USERNAME
 
 # mmc: problems:
 # export LESS=-cex3M
 # export HELPDIR=/usr/local/lib/zsh/help  # directory for run-help function to find docs
 
-MAILCHECK=300
-HISTSIZE=200
 DIRSTACKSIZE=20
-
-
-
-# Watch for my friends
-# watch=( $(<~/.friends) )       # watch for people in .friends file
-watch=(postgres beta root@linux1 mmc@linux1)                   # watch for everybody but me
-watch=postgres:beta:root@linux1:mmc@linux1
-LOGCHECK=300                    # check every 5 min for login/logout activity
-WATCHFMT='%n %a %l from %m at %t.'
 
 # Set/unset  shell options
 setopt  correct autocd autopushd histignoredups noclobber pushdsilent cdablevars
@@ -115,27 +85,15 @@ setopt  promptcr
 unsetopt AUTO_REMOVE_SLASH
 # globdots:   * != .*
 # notify  pushdtohome  autolist
-# setopt   correctall  recexact longlistjobs
-# setopt   autoresume
-# setopt    pushdminus extendedglob rcquotes mailwarning
+# setopt  correctall  recexact longlistjobs
+# setopt  autoresume
+# setopt  pushdminus extendedglob rcquotes mailwarning
 # unsetopt bgnice autoparamslash
 
-# 2003-06-29
-setopt nohistbeep
-setopt cshjunkiehistory
-setopt extendedhistory
-setopt histignoredups
-setopt histverify
-setopt incappendhistory
 
-
-# # Autoload zsh modules when they are referenced
-# zmodload -a zsh/stat stat
-# zmodload -a zsh/zpty zpty
-# zmodload -a zsh/zprof zprof
-# zmodload -ap zsh/mapfile mapfile
-
+# now, or after compinit?
 source $MYZSHDIR/keybindings
+
 
 # Setup new style completion system. To see examples of the old style (compctl
 # based) programmable completion, check Misc/compctl-examples in the zsh
@@ -144,93 +102,38 @@ autoload -U compinit
 compinit
 
 ### Completion Styles
-zstyle ':completion:*:cd:*' tag-order local-directories path-directories
+source $MYZSHDIR/completion-styles
 
-# list of completers to use
-zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
-
-# allow one error for every three characters typed in approximate completer
-zstyle -e ':completion:*:approximate:*' max-errors \
-    'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
-
-# insert all expansions for expand completer
-zstyle ':completion:*:expand:*' tag-order all-expansions
-
-# formatting and messages
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*:descriptions' format '%B%d%b'
-zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:warnings' format 'No matches for: %d'
-zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
-zstyle ':completion:*' group-name ''
-
-# match uppercase from lowercase
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
-# offer indexes before parameters in subscripts
-zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
-
-# command for process lists, the local web server details and host completion
-#zstyle ':completion:*:processes' command 'ps -o pid,s,nice,stime,args'
-#zstyle ':completion:*:urls' local 'www' '/var/www/htdocs' 'public_html'
-# Hosts to use for completion (see later zstyle)
-hosts=$(hostname)
-# ftp.math.gatech.edu prep.ai.mit.edu wuarchive.wustl.edu
-zstyle '*' hosts $hosts
-
-# Filename suffixes to ignore during completion (except after rm command)
-zstyle ':completion:*:*:(^rm):*:*files' ignored-patterns '*?.o' '*?.c~' \
-    '*?.old' '*?.pro'
-# the same for old style completion
-#fignore=(.o .c~ .old .pro)
-
-# ignore completion functions (until the _ignored completer)
-zstyle ':completion:*:functions' ignored-patterns '_*'
-
-
-### maruska:
-typeset ZLS_COLORS=$LS_COLORS
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
-# wiki
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*' force-list always
-zstyle ':completion:*:rm:*' ignore-line yes
 
 ### line editing:
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 
 ### History
+HISTFILE=~/.zsh_history/$HOST$(echo $TTY| sed -e 's/\//_/g')
 typeset HISTSIZE=20000
 # HISTFILE=~/.history
 # history related stuff.
 export SAVEHIST=5000
 # export HISTFILE=~/.zsh_history
 setopt hist_ignore_dups        # ignore same commands run twice+
+
+# 2003-06-29
+setopt nohistbeep
+setopt cshjunkiehistory
+setopt extendedhistory
+setopt histverify              # when using ! cmds, confirm first
+
 setopt appendhistory           # don't overwrite history
-
-
-
+setopt incappendhistory
 #export HISTIGNORE=\&
 setopt EXTENDED_HISTORY
 #typeset EXTENDED_HISTORY=1
 
 
 
-### I want C-s to search, not stop !!!
-unsetopt FLOW_CONTROL
-
-# . /etc/maruska/alias
-# echo zprofile
 source ${MYZSHDIR}/zsh-alias
 source ${MYZSHDIR}/space_separated
-
-
-#export
-# PATH=/usr/kde/3/bin:$PATH
-
-
 
 ### MISC:
 #  core dump
@@ -242,35 +145,8 @@ ZBEEB='\e[?5l\e[?5h'
 setopt BEEP
 setopt LIST_BEEP
 
-#zle -C all-matches complete-word _generic
-#zle -C match-word complete-word _generic
-#bindkey '^Xx' all-matches
-#bindkey '\e*' match-word
-
-zstyle ':completion:all-matches::::' completer _all_matches _complete
-zstyle ':completion:all-matches:*' old-matches true
-zstyle ':completion:all-matches:*' insert true
-zstyle ':completion:match-word::::' completer _all_matches _match _ignored
-zstyle ':completion:match-word:*' insert-unambiguous true
-zstyle ':completion:match-word:*' match-original both
-
 zle -C all-matches complete-word _generic
 zle -C match-word complete-word _generic
-
-bindkey '^Xx' all-matches
-
-bindkey '\e*' match-word
-
-
-
-
-
-## jobs
-zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*' matcher-list '' 'l:|=* r:|=*' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' max-errors 3
-zstyle ':completion:*' menu select=1
-# style ':completion:*:processes' command 'ps -au$USER'
 
 source ${MYZSHDIR}/background
 source ${MYZSHDIR}/subst
@@ -287,22 +163,12 @@ source ${MYZSHDIR}/fcd
 _compdir=/usr/share/zsh/functions/Core
 [[ -z $fpath[(r)$_compdir] ]] && fpath=($fpath $_compdir)
 
-#autoload -U compinit
-#compinit
 # End of lines added by compinstall
 
-# echo zshrc
 # told from info:
 autoload -U compinstall
 
 setopt AUTO_PUSHD
-
-# export KDEDIR=/usr/kde/cvs
-# PATH=$KDEDIR/bin:$PATH:/usr/local/pgsql/bin
-
-# export LD_LIBRARY_PATH=$QTDIR/lib
-
-
 
 ### test alias/function
 cvsrm(){
@@ -313,15 +179,10 @@ cvsrm(){
 
 
 ### demian
-
-#!/usr/bin/zsh
-# -*- mode: shell-script -*-
-#
 # .zshrc - customisations for the all-powerful shell
 #
 # the latest copy of this file can be found at
 #   http://repose.cx/conf
-#
 
 typeset -U path
 # path=(~/.bin ~/Muse /sbin /usr/sbin $path)
@@ -353,15 +214,12 @@ setopt completeinword          # not just at the end
 setopt alwaystoend             # when complete from middle, move cursor
 setopt correct                 # spelling correction
 setopt nopromptcr              # don't add \n which overwrites cmds with no \n
-setopt histverify              # when using ! cmds, confirm first
 setopt interactivecomments     # escape commands so i can use them later
 setopt printexitvalue          # alert me if something's failed
 
 # woo! so glad i found this. jump to each element in a path with m-f m-b, same
 # for kill-word, etc.
 export WORDCHARS=''
-
-
 
 # this is defined in ~/.bin/e now
 #
@@ -376,82 +234,10 @@ export WORDCHARS=''
 
 # export CVSROOT=~/CVS
 
-
-
-
-### completion tweaking
-# complete hostnames out of ssh's ~/.ssh/known_hosts
-autoload -U compinit; compinit
-zstyle ':completion:*' use-cache on
-
-if [ -e $HOME/.ssh/known_hosts ]
-then
-    hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*})
-    zstyle ':completion:*:hosts' hosts $hosts
-fi
-
-
-# use dircolours in completion listings
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
-# allow approximate matching
-zstyle ':completion:*' completer _complete _match _approximate
-zstyle ':completion:*:match:*' original only
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
-zstyle ':completion:*' auto-description 'Specify: %d'
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' verbose true
-zstyle ':completion:*:functions' ignored-patterns '_*'
-zstyle ':completion:*:*:(^rm):*:*files' ignored-patterns \
-    '*?.(o|c~|zwc)' '*?~'
-
-unalias run-help >& /dev/null
-autoload run-help
-
-zle -N miciah-run-help;
-function miciah-run-help (){
-    buf="$BUFFER$RBUFFER";
-    run-help ${${buf##noglob }%% *};
-    zle .redisplay
-};
-
-# bindkey '\eh' miciah-run-help
-
-function caphuso_help (){
-    print 1;
-    run-help ${${BUFFER##[[:blank:]]#sudo#[[:blank:]]#}%% *}
-    print -z ${(q)BUFFER}
-    zle send-break
-};
-zle -N caphuso_help;
-
-
-function run-help-pinfo (){
-mancmd=pinfo
-    buf="$BUFFER$RBUFFER";
-    run-help ${${buf##noglob }%% *};
-
-#zle .run-help
-}
-zle -N run-help-pinfo
-
-bindkey '^xt' run-help-pinfo
-
-bindkey '^_' undo
-
-zstyle -e ':completion:*' completer '[[ ${BUFFER%% *} = cd ]] && reply=(_complete _correct _approximate) || reply=(_complete)'
-# "Completion System Configurationn"
-
-zstyle  ':completion:*:cvs-add:*' file-sort modification
-
-zstyle ':completion:*:default'  list-colors ${(s.:.)LS_COLORS}
-
-zstyle ":incremental" stop-keys "^M"
+source $MYZSHDIR/help-functions
 
 # -k -z  ksh-style: (evaluate)
 autoload -z zload-file
-
-zstyle ':completion:*:default'  list-colors ${(s.:.)LS_COLORS}
 
 # For Sawfish WM:
 wid_asigned=n
@@ -461,15 +247,14 @@ assign_wid_maybe()
     # match .. prints... either position?  or the matched string!
     if [ $wid_asigned != y -a  "$(expr match $PWD  ".*\(mp3\|youtube\)")" != "" ];
     then
-	wid_asigned=y
-	if [ -n "${WINDOWID-}" ]; then
-	    sawfish-client -e "(bind-wid-to-window \"s\" (get-window-by-id $WINDOWID))"
-	fi
+        wid_asigned=y
+        if [ -n "${WINDOWID-}" ]; then
+            sawfish-client -e "(bind-wid-to-window \"s\" (get-window-by-id $WINDOWID))"
+        fi
     fi
 }
 typeset -a chpwd_functions
 chpwd_functions+=(assign_wid_maybe)
 
 possibly_source $MYZSHDIR/task
-
 possibly_source $MYZSHDIR/user-functions

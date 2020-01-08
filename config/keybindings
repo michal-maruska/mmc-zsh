@@ -146,6 +146,10 @@ bindkey "^i" expand-or-complete-prefix
 bindkey "\ee" expand-or-complete
 bindkey "^X^I" expand-or-complete-prefix
 
+bindkey '^Xx' all-matches
+bindkey '\e*' match-word
+
+
  bindkey ' ' magic-space    # also do history expansion on space
 
 
@@ -162,11 +166,12 @@ bindkey "^Xr" run-help
 # bindkey "\eh" run-help
 
 # bindkey "^-" undo
+bindkey '^_' undo
+#bindkey '^-' undo
 
 #bindkey "\C-k" expand-or-complete
 
 
-#bindkey '^-' undo
 bindkey '\er' redisplay
 #&& bindkey -me
 

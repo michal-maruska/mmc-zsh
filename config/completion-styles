@@ -1,0 +1,105 @@
+zstyle ':completion:*:cd:*' tag-order local-directories path-directories
+
+# list of completers to use
+zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
+
+# allow one error for every three characters typed in approximate completer
+zstyle -e ':completion:*:approximate:*' max-errors \
+    'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
+
+# insert all expansions for expand completer
+zstyle ':completion:*:expand:*' tag-order all-expansions
+
+# formatting and messages
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format 'No matches for: %d'
+zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
+zstyle ':completion:*' group-name ''
+
+# match uppercase from lowercase
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# offer indexes before parameters in subscripts
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+
+# command for process lists, the local web server details and host completion
+#zstyle ':completion:*:processes' command 'ps -o pid,s,nice,stime,args'
+#zstyle ':completion:*:urls' local 'www' '/var/www/htdocs' 'public_html'
+# Hosts to use for completion (see later zstyle)
+hosts=$(hostname)
+# ftp.math.gatech.edu prep.ai.mit.edu wuarchive.wustl.edu
+zstyle '*' hosts $hosts
+
+# Filename suffixes to ignore during completion (except after rm command)
+zstyle ':completion:*:*:(^rm):*:*files' ignored-patterns '*?.o' '*?.c~' \
+    '*?.old' '*?.pro'
+# the same for old style completion
+#fignore=(.o .c~ .old .pro)
+
+# ignore completion functions (until the _ignored completer)
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
+
+### maruska:
+typeset ZLS_COLORS=$LS_COLORS
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# wiki
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+zstyle ':completion:*:rm:*' ignore-line yes
+
+
+zstyle ':completion:all-matches::::' completer _all_matches _complete
+zstyle ':completion:all-matches:*' old-matches true
+zstyle ':completion:all-matches:*' insert true
+zstyle ':completion:match-word::::' completer _all_matches _match _ignored
+zstyle ':completion:match-word:*' insert-unambiguous true
+zstyle ':completion:match-word:*' match-original both
+
+
+## jobs
+zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
+zstyle ':completion:*' matcher-list '' 'l:|=* r:|=*' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' max-errors 3
+zstyle ':completion:*' menu select=1
+# style ':completion:*:processes' command 'ps -au$USER'
+
+
+### completion tweaking
+# complete hostnames out of ssh's ~/.ssh/known_hosts
+autoload -U compinit; compinit
+zstyle ':completion:*' use-cache on
+
+if [ -e $HOME/.ssh/known_hosts ]
+then
+    hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*})
+    zstyle ':completion:*:hosts' hosts $hosts
+fi
+
+
+# use dircolours in completion listings
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# allow approximate matching
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+zstyle ':completion:*' auto-description 'Specify: %d'
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' verbose true
+zstyle ':completion:*:functions' ignored-patterns '_*'
+zstyle ':completion:*:*:(^rm):*:*files' ignored-patterns \
+    '*?.(o|c~|zwc)' '*?~'
+
+zstyle -e ':completion:*' completer '[[ ${BUFFER%% *} = cd ]] && reply=(_complete _correct _approximate) || reply=(_complete)'
+# "Completion System Configurationn"
+
+zstyle  ':completion:*:cvs-add:*' file-sort modification
+
+zstyle ':completion:*:default'  list-colors ${(s.:.)LS_COLORS}
+
+zstyle ":incremental" stop-keys "^M"
+zstyle ':completion:*:default'  list-colors ${(s.:.)LS_COLORS}
