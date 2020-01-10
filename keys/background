@@ -1,8 +1,9 @@
 #
 # quite good
-bindkey -s 'j' '^E&'
+bindkey -s '^[j' '^e&^m'
 
 # untested
-bindkey -s '^|' '^E&!'
+# bindkey -s '^|' '^E&!'
 
-bindkey -s '^Z' 'bg'
+# useful?
+# bindkey -s '^Z' ' bg^m'
