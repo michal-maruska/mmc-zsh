@@ -61,12 +61,6 @@ bindkey "\e+" backward-to-/
 # bindkey '\eb' miciah-backward-word
 
 
-# NOT used:
-kill-to-position(){
-  from=shift;
- # to=shift;
-  RBUFFER="${RBUFFER[$from,-1]}"
-}
 
 kill-backward-to-position(){
   to=shift;
@@ -117,7 +111,6 @@ bindkey "\e^k" kill-to-/
 
 #LBUFFER RBUFFER
 #MARK
-#kill-to-position
 #$CURSOR
 
 bindkey "^X^h" backward-kill-word
