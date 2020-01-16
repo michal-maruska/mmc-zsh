@@ -37,10 +37,6 @@ function is_quoted(){
 
 
 
-function set-xselection(){
-    echo ${BUFFER} | xsel
-}
-zle -N set-xselection
 
 
 unquote-forward-word(){
@@ -238,20 +234,5 @@ bindkey '\ee' forward-word
 else
 bindkey '\ef' forward-word
 bindkey '\ee' bash-forward-word
-
-fi
-
-# I have a better solution for now!
-if false;
-then
-
-
-function xsel-kill-region () {
-zle kill-region;
-echo -n $CUTBUFFER | xsele -c
-};
-
-zle -N xsel-kill-region;
-bindkey '^W' xsel-kill-region
 
 fi
