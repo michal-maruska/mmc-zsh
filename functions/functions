@@ -111,7 +111,7 @@ function rehistory()
 
 
 # Clint helped
-alias ,="subst"
+alias ,="load_buffer"
 alias ,,=", ${activity_dir}zsh/snippet"
 # fixme: only if changed  between now, and last invokation/command?
 [ -x  ${activity_dir}/zsh/subst ] && .  ${activity_dir}/zsh/subst
