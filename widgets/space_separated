@@ -31,41 +31,6 @@ my_extended_wordchars="\"*?_-.'[]~=+&;!#$%^(){}<>:@,\\";
 my_extended_wordchars_space="${my_extended_wordchars} "
 my_extended_wordchars_slash="${my_extended_wordchars}/"
 
-function is_quoted(){
- test "${BUFFER[$CURSOR-1,CURSOR-1]}" = "\\"
-}
-
-
-
-
-
-unquote-forward-word(){
-    while is_quoted
-      do zle .forward-word
-    done
-}
-
-unquote-backward-word(){
-    while  is_quoted
-      do zle .backward-word
-    done
-}
-
-
-backward-to-space() {
-    local WORDCHARS=${my_extended_wordchars_slash}
-    zle .backward-word
-    unquote-backward-word
-}
-
-forward-to-space() {
-     local WORDCHARS=${my_extended_wordchars_slash}
-     #zle .forward-word
-     zle bash-forward-word
-     unquote-forward-word
-}
-
-
 
 backward-to-/ () {
     local WORDCHARS=${my_extended_wordchars}
@@ -80,17 +45,8 @@ forward-to-/ () {
 }
 
 
-
-
-zle -N backward-to-space
-zle -N forward-to-space
-
 zle -N backward-to-/
 zle -N forward-to-/
-
-
-bindkey "\e^B" backward-to-space
-bindkey "\e^F" forward-to-space
 
 
 bindkey "\e/" forward-to-/
@@ -105,18 +61,6 @@ bindkey "\e+" backward-to-/
 # bindkey '\eb' miciah-backward-word
 
 
-### delete
-zle -N kill-with-spaces
-
-# doesn't put on undo list !!
-# kill-with-spaces() {
-#     local words
-#     local WORDCHARS=""
-#     words="${(z)BUFFER}"
-#     BUFFER="${BUFFER%${words[-1]}[ ]#}"
-# }
-
-
 # NOT used:
 kill-to-position(){
   from=shift;
@@ -128,14 +72,6 @@ kill-backward-to-position(){
   to=shift;
  # to=shift;
   LBUFFER="${LBUFFER[0,$to]}"
-}
-
-kill-with-spaces() {
-    zle set-mark-command
-    zle vi-forward-blank-word
-    zle kill-region
-    # todo: if previous is not space, than
-    LBUFFER="${LBUFFER} "
 }
 
 
@@ -174,7 +110,6 @@ kill-backward-to-/(){
 bindkey "^[*" kill-to-/
 bindkey "^[<" kill-backward-to-/
 bindkey "\e^k" kill-to-/
-bindkey "\ek" kill-with-spaces
 
 #bindkey "^Z undo
 
@@ -185,11 +120,8 @@ bindkey "\ek" kill-with-spaces
 #kill-to-position
 #$CURSOR
 
-
-bindkey "^Xh" kill-with-spaces
 bindkey "^X^h" backward-kill-word
 bindkey "^X^h" backward-kill-word
-#bindkey "\e^H kill-with-spaces
 
 ###   failed attempt to have a 'dead' key which stops the isearch. sort-of "C-m" in isearch in emacs.
 my-history-incremental-search-backward()

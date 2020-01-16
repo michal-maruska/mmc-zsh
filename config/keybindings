@@ -71,9 +71,6 @@ then
     bindkey '\e[94~' kill-word
 
     bindkey '\e[93~' backward-kill-word
-    bindkey '\e[93~' kill-with-spaces
-
-    bindkey '\e[96~' kill-with-spaces
 fi
 
 ### Line editing:
@@ -81,7 +78,6 @@ fi
 bindkey "^[[3~" delete-char-or-list
 bindkey -r "^[[3"
 # Meta:
-bindkey "^[^[[3~" kill-with-spaces
 #kill-to-/
 # Control
 bindkey "^[[3\^" kill-word
