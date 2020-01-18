@@ -143,3 +143,48 @@ else
     # just after the current word:
     bindkey '\ee' bash-forward-word
 fi
+
+
+### Use User-contributed ZLE Functions:
+
+autoload -U select-word-style
+select-word-style "shell"
+# styles:
+# `word-style'
+# normal specified shell whitespace   -subword !!!
+# `skip-chars'
+zstyle ':zle:transpose-words' skip-chars 1
+# forward-word  `skip-whitespace-first'
+
+function autoload_widget()
+{
+    autoload $1
+    zle -N $1
+}
+
+autoload_widget backward-word-match
+autoload_widget forward-word-match
+autoload_widget delete-whole-word-match
+
+
+# Meta-Control:
+bindkey "\e^F" forward-word-match
+bindkey "\e^B" backward-word-match
+bindkey "\e^k" delete-whole-word-match
+
+# delete-whole-word-match
+# kill-word-match  -- I can use `delete-whole-word-match'
+# backward-kill-word-match
+
+autoload_widget transpose-words-match
+bindkey "\e^t" transpose-words-match
+
+# capitalize-word-match ... I can
+# up-case-word-match
+# down-case-word-match
+
+# select-word-match ??
+# match-word-context
+# match-words-by-style
+
+# bindkey "^Xh" kill-with-spaces
