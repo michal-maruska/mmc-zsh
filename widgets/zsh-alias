@@ -1,5 +1,14 @@
 #! /usr/bin/zsh -f
 
+# copied from space_separated
+function autoload_widget()
+{
+    autoload $1
+    zle -N $1
+}
+autoload_widget forward-word-match
+
+
 edit-alias() {
     local al
     al="$(alias $1)"  ||  return 1
@@ -9,20 +18,10 @@ edit-alias() {
 
 # expand the 1st word as an alias:
 # not previous
-
 my-expand-alias() {
-
     # get the 1st  sequence of non space:
-
-    #old=WORDCHARS
-    #WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-
-
-    zle  beginning-of-line;
-
-    # zle vi-forward-word-end;        # this doesn't work w/  'x.m'
-
-    zle forward-to-space;           # why?
+    zle beginning-of-line;
+    zle forward-word-match
 
     # forward
     # bug!
