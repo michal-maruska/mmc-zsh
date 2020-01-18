@@ -10,9 +10,11 @@ autoload_widget forward-word-match
 
 
 edit-alias() {
-    local al
-    al="$(alias $1)"  ||  return 1
-    print -z alias $al
+    # function to populate next command-line with this template:
+    local expanded_alias
+    expanded_alias="$(alias $1)"  ||  return 1
+    # populate BUFFER:
+    print -z alias $expanded_alias
 }
 
 
