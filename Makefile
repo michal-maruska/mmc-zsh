@@ -1,4 +1,3 @@
-
 SHELL=zsh
 
 topdir=/usr/share/zsh/site-functions

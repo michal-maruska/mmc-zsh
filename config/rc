@@ -1,7 +1,7 @@
 ### Configure terminal -- rxvt
 # how to detect RXVT?
-# numblock keys !
 
+# numblock keys !
 if [ "$TERM" = rxvt ]
 then
     # only if Under rxvt!
@@ -259,3 +259,4 @@ chpwd_functions+=(assign_wid_maybe)
 
 possibly_source $MYZSHDIR/task
 possibly_source $MYZSHDIR/user-functions
+
