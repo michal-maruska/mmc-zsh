@@ -138,7 +138,8 @@ then
 bindkey '\ef' bash-forward-word
 bindkey '\ee' forward-word
 else
-bindkey '\ef' forward-word
-bindkey '\ee' bash-forward-word
+    bindkey '\ef' forward-word
 
+    # just after the current word:
+    bindkey '\ee' bash-forward-word
 fi
