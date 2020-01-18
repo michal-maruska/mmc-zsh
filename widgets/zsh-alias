@@ -33,11 +33,8 @@ my-expand-alias() {
 
     if [ ' ' = ${LBUFFER[$CURSOR]} ];
     then
-        zle  backward-char;
+        zle backward-char;
     fi
-
-    #    zle  forward-word;
-    #zle backward-char;
 
     # for safety, in case there's an = which will mess things up...
     local alias=${LBUFFER#*=}
@@ -61,20 +58,16 @@ my-expand-alias() {
     WORDCHARS=old
 }
 
+
 zle -N my-expand-alias
-zle -N expand-alias
-# bindkey '^[^e' expand-alias
-
-# in 4.2.5, if i try to expand an alias which starts with "- " (e.g. alias ds='- du -x -s *(/) |sort -n| human 1024')
-# bindkey '^[^e' _expand-alias  fails!
-
 # [05 lug 06] mmc:   So I go back to my function:
 bindkey '^[^e' my-expand-alias
 
-# _expand_alias
+# in 4.2.5, if i try to expand an alias which starts with "- " (e.g. alias ds='- du -x -s *(/) |sort -n| human 1024')
+# bindkey '^[^e' _expand-alias  fails!
+# 2020: I cannot reproduce it, so reinstate:
+bindkey '^[^e' _expand_alias
 
-# zle  history-incremental-search-forward;
-# echo
 output_region (){
     region=${LBUFFER[0,$CURSOR]}
     echo $CURSOR $MARK $region
