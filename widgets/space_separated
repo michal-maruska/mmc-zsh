@@ -18,13 +18,11 @@ my_extended_wordchars_slash="${my_extended_wordchars}/"
 backward-to-/ () {
     local WORDCHARS=${my_extended_wordchars}
     zle .backward-word
-    unquote-backward-word
 }
 
 forward-to-/ () {
-     local WORDCHARS=${my_extended_wordchars}
-     zle .forward-word
-     unquote-forward-word
+    local WORDCHARS=${my_extended_wordchars}
+    zle .forward-word
 }
 
 
