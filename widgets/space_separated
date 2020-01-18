@@ -1,29 +1,12 @@
 # -*-sh-*-
+# notice: select-a-shell-word
 
-### i rebind  M-h etc  to kill WHOLE argument
-# sometimes i still need this (detail):
+### I rebind M-h etc to kill the whole argument
+# sometimes I still need this (detail):
 
 # see /etc/zsh/zshrc  for `arrows'
 
-
-
-## todo:  vi-backward-word
-##      is ther
-
-
-
 # http://www.zshwiki.org/cgi-bin/wiki.pl?ZshBindkeys
-#  "${WORDCHARS:s@/@}"
-# "${(@)foo}"
-
-
-#
-#',*?_-.[]~=&;!#$%^(){}<>@'
-
-# not space, and not "/"
-#;'*?_-.[]~=&;!#$%^(){}<>/,@'
-#'*?_-.[]~=&;!#$%^(){}<>/'
-# zle -N is_quoted
 
 ###  movement
 
