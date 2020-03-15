@@ -63,11 +63,11 @@ zle -N kill-backward-with-spaces
 zle -N kill-to-/
 
 kill-to-/(){
-local saved_mark=${MARK}
-zle set-mark-command
-zle forward-to-/
-zle kill-region
-MARK=${saved_mark}
+    local saved_mark=${MARK}
+    zle set-mark-command
+    zle forward-to-/
+    zle kill-region
+    MARK=${saved_mark}
 }
 
 
