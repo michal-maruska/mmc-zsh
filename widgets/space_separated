@@ -126,17 +126,17 @@ zle -N exit-search
 bindkey "^[o" copy-prev-shell-word
 
 
-bash-forward-word(){
+forward-next-word(){
      zle vi-forward-blank-word-end
      zle forward-char
 }
-zle -N bash-forward-word
+zle -N forward-next-word
 
 
 if false;
 then
-bindkey '\ef' bash-forward-word
-bindkey '\ee' forward-word
+    bindkey '\ef' forward-next-word
+    bindkey '\ee' forward-word
 else
     bindkey '\ef' forward-word
 
