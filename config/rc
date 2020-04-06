@@ -261,3 +261,6 @@ possibly_source $MYZSHDIR/task
 possibly_source $MYZSHDIR/user-functions
 
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# builtin:
+zle_highlight=("isearch:bold,fg=40,underline" "region=:bold,bg=30")
+
