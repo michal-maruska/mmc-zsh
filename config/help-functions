@@ -1,30 +1,27 @@
+# Todo best if the completion code could determine any executable around cursor
+
 unalias run-help >& /dev/null
 autoload run-help
 
-zle -N miciah-run-help;
-function miciah-run-help (){
-    buf="$BUFFER$RBUFFER";
-    run-help ${${buf##noglob }%% *};
-    zle .redisplay
-};
-
-# bindkey '\eh' miciah-run-help
-
 function caphuso_help (){
-    print 1;
-    run-help ${${BUFFER##[[:blank:]]#sudo#[[:blank:]]#}%% *}
+    # miciah:
+    # buf="$BUFFER$RBUFFER";
+
+    # what is this:  ##PATTERN -> same as "Filename Generation"
+    #    # 0 or more occurence/repetition.             & this
+    #
+    run-help ${${BUFFER##[[:blank:]]#((noglob|sudo)#[[:blank:]]#)#}%% *}
+    # Push the arguments onto the editing buffer stack, separated by spaces.
+    # (q) ??
     print -z ${(q)BUFFER}
+    # send-break (^G ESC-^G) (unbound) (unbound)
+    # Abort the current editor function, e.g.  execute-named-command, or
+    # the editor itself, e.g.  if you are in vared.  Otherwise abort the
     zle send-break
+    # miciah does here:
+    # zle .redisplay
 };
 zle -N caphuso_help;
 
+bindkey '^xt' caphuso_help
 
-function run-help-pinfo (){
-    mancmd=pinfo
-    buf="$BUFFER$RBUFFER";
-    run-help ${${buf##noglob }%% *};
-    #zle .run-help
-}
-
-zle -N run-help-pinfo
-bindkey '^xt' run-help-pinfo
