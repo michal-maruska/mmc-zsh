@@ -1,0 +1,24 @@
+# understand
+
+# just:
+# autoload -U run-help-pip3
+
+if [[ $# -eq 0 ]]; then
+    man pip3
+else
+
+    # Collect non-options, ie. subcommands!
+
+    # only 2, and only up-to 1st option :(
+    local args=($1)
+    if [[ $# -ge 2 ]]; then
+
+        if [[ $2 =~ '[^-].*' ]]; then
+            args+=($2)
+        fi
+    fi
+#    if al=$(git config --get "alias.$1"); then
+#        1=${al%% *}
+#    fi
+    pip3 $args -h
+fi

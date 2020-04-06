@@ -25,3 +25,8 @@ zle -N caphuso_help;
 
 bindkey '^xt' caphuso_help
 
+#
+autoload -Uz run-help-p4
+autoload -Uz run-help-git
+autoload -U run-help-conan
+autoload -U run-help-pip3

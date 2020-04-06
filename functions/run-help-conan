@@ -1,0 +1,21 @@
+# understand
+
+if [[ $# -eq 0 ]]; then
+    conan help
+else
+
+    # Collect non-options, ie. subcommands!
+
+    # only 2, and only up-to 1st option :(
+    local args=($1)
+    if [[ $# -ge 2 ]]; then
+
+        if [[ $2 =~ '[^-].*' ]]; then
+            args+=($2)
+        fi
+    fi
+#    if al=$(git config --get "alias.$1"); then
+#        1=${al%% *}
+#    fi
+    conan $args -h
+fi
