@@ -1,0 +1,8 @@
+#compdef mempeak
+
+# mempeak foo,two=3,one=15
+
+_values -s , 'description' \
+                  '*foo[bar]' \
+                  '(two)*one[number]:first count:' \
+                  'two[another number]::second count:(1 2 3)'
