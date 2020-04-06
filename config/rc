@@ -260,3 +260,4 @@ chpwd_functions+=(assign_wid_maybe)
 possibly_source $MYZSHDIR/task
 possibly_source $MYZSHDIR/user-functions
 
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
