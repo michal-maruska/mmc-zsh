@@ -61,6 +61,7 @@ then
 
     # Ctrl left, right
     bindkey '\eOd' backward-word
+    # mmc: dropped?
     bindkey '\eOc' bash-forward-word
 
     # Meta  left right
@@ -198,3 +199,4 @@ bindkey '\e^N' history-beginning-search-forward-end
 
 
 # unsetopt MULTIBYTE
+bindkey '^g' vi-find-next-char

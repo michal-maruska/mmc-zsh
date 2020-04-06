@@ -14,6 +14,8 @@ my_extended_wordchars="\"*?_-.'[]~=+&;!#$%^(){}<>:@,\\";
 my_extended_wordchars_space="${my_extended_wordchars} "
 my_extended_wordchars_slash="${my_extended_wordchars}/"
 
+# is forward-word the same as backward-word-match ?
+
 
 backward-to-/ () {
     local WORDCHARS=${my_extended_wordchars}
@@ -94,8 +96,7 @@ bindkey "\e^k" kill-to-/
 #MARK
 #$CURSOR
 
-bindkey "^X^h" backward-kill-word
-bindkey "^X^h" backward-kill-word
+# bindkey "^X^h" backward-kill-word
 
 ###   failed attempt to have a 'dead' key which stops the isearch. sort-of "C-m" in isearch in emacs.
 my-history-incremental-search-backward()
@@ -120,7 +121,6 @@ exit-search(){
 
 zle -N exit-search
 
-
 ### misc
 
 bindkey "^[o" copy-prev-shell-word
@@ -132,16 +132,30 @@ forward-next-word(){
 }
 zle -N forward-next-word
 
+# My requirements:
+# C-  1 char
+# C-M  -- whole shell argument.
+
+# some way to skip to /  (on filenames)
+# b f  with group 1
+
+# some way to skip words....
+
 
 if false;
 then
     bindkey '\ef' forward-next-word
     bindkey '\ee' forward-word
 else
-    bindkey '\ef' forward-word
+    # Meta:
+    bindkey "\ef" emacs-forward-word
+    bindkey "\eb" emacs-backward-word
 
+
+    # bash-forward-word?
+    bindkey '\ef' vi-forward-word
     # just after the current word:
-    bindkey '\ee' bash-forward-word
+    bindkey '\ee' forward-next-word
 fi
 
 
@@ -167,10 +181,14 @@ autoload_widget forward-word-match
 autoload_widget delete-whole-word-match
 
 
+
 # Meta-Control:
+bindkey "\ed" delete-word
+
 bindkey "\e^F" forward-word-match
 bindkey "\e^B" backward-word-match
 bindkey "\e^k" delete-whole-word-match
+# kill-backward-with-spaces
 
 # delete-whole-word-match
 # kill-word-match  -- I can use `delete-whole-word-match'
@@ -188,3 +206,12 @@ bindkey "\e^t" transpose-words-match
 # match-words-by-style
 
 # bindkey "^Xh" kill-with-spaces
+
+# bingo!
+zstyle ':zle:transpose-words:whitespace' word-style shell
+zstyle ':zle:transpose-words:filename' word-style normal
+zstyle ':zle:transpose-words:filename' word-chars ''
+
+bindkey '\ev' vi-oper-swap-case
+# backward-kill-word
+bindkey "^X^h" vi-backward-kill-word
