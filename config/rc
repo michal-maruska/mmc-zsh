@@ -264,3 +264,10 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # builtin:
 zle_highlight=("isearch:bold,fg=40,underline" "region=:bold,bg=30")
 
+
+reload_function()
+{
+    cecho red "reloading $1"
+    unfunction $1
+    autoload -U $1
+}
