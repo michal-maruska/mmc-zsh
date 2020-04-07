@@ -7,6 +7,6 @@ Standards-Version: 3.7.2
 
 Package: mmc-zsh
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, zsh, zsh-syntax-highlighting
+Depends: ${shlibs:Depends}, ${misc:Depends}, zsh, zsh-syntax-highlighting, lsb-release
 Description: Michal Maruska's convenient zsh files
  My site-wise configs for zsh (line editing widgets)...
