@@ -1,3 +1,47 @@
+mmc-zsh (2.4) release; urgency=medium
+
+  * tabs
+  * spaces
+  * prompt: change the color of chroot and %m
+  * report the container too!
+  * spaces
+  * avoid the HOST os ... fixme!
+  * spaces
+  * Document the relationship with maruska-preference, but drop the mentions in the code.
+  * space
+  * Concentrate keybinding per group. Disable some unused
+  * space
+  * clean up rc: split to new files, reorder, move away, drop
+  * space
+  * space / clean up
+  * minimize the "macros" I use (to put into background)
+  * rename to load_buffer
+  * drop old unused xselection code
+  * Drop my naive argument-wize movements/kill commands (kill-with-spaces ...)
+  * drop kill-to-position
+  * sq: move History before /etc/profile.
+  * space
+  * drop forward-to-space from alias expansion.
+  * document edit-alias
+  * Use  _expand_alias again
+  * clean up comments in space_separated
+  * drop unquote-backward-word from space-...
+  * indent kill-backward-with-spaces
+  * format
+  * Use User-contributed ZLE Functions: word-match shell style
+  * rename bash-forward-word to forward-next-word
+  * indent
+  * stage 1 reorg
+  * use zsh-syntax-highlighting
+  * help-functions: drop miciah variant, and keep only caphuso_help
+  * run-help conan & pip3 (git p4)?
+  * tune the highlighting
+  * reload_function function
+  * completions for pip  & mempeak
+  * add dependency which I use it title!
+
+ -- Michal Maruska <mmaruska@gmail.com>  Thu, 09 Apr 2020 13:53:39 +0200
+
 mmc-zsh (2.3) release; urgency=medium
 
   * source /etc/profile only after defining histfile.
