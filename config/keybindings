@@ -84,6 +84,8 @@ bindkey -r "^[[3"
 bindkey "^[[3\^" kill-word
 # kill-word
 bindkey "\eh" backward-kill-word
+# delete-word does not save into kill-ring!
+bindkey "^[d" kill-word
 
 
 # Meta:

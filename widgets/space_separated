@@ -183,7 +183,6 @@ autoload_widget delete-whole-word-match
 
 
 # Meta-Control:
-bindkey "\ed" delete-word
 
 bindkey "\e^F" forward-word-match
 bindkey "\e^B" backward-word-match
