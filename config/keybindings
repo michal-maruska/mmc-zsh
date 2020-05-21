@@ -59,14 +59,18 @@ then
     bindkey "\e[7~" beginning-of-line
     bindkey "\e[8~" end-of-line
 
-    # Ctrl left, right
+    # Ctrl + left, right arrow keys!
     bindkey '\eOd' backward-word
-    # mmc: dropped?
-    bindkey '\eOc' bash-forward-word
+    bindkey '\eOc' vi-forward-blank-word-end
 
     # Meta  left right
     bindkey '\e[\`2' backward-word
-    bindkey '\e[\`3' bash-forward-word
+    #  word    next-wod
+    #     12  34
+    #     ^
+    # at the end=last letter, words divided by space (or tab)
+    # forward-next-word  at the first space!
+    bindkey '\e[\`3' vi-forward-blank-word-end
 
 
     bindkey '\e[94~' kill-word
