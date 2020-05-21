@@ -1,6 +1,4 @@
-# print -z ${"$(<~/activity/zsh/rotate)"}
-
-# put the content of the file $1 on the cmdline (BUFFER)
+# Put the content of the file $1 on the cmdline (BUFFER)
 load_buffer (){
       print -z ${"$(<$1)"}
 }

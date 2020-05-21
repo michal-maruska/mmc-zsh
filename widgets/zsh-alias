@@ -10,7 +10,7 @@ autoload_widget forward-word-match
 
 
 edit-alias() {
-    # function to populate next command-line with this template:
+    # Function to populate next command-line with this template:
     local expanded_alias
     expanded_alias="$(alias $1)"  ||  return 1
     # populate BUFFER:
@@ -21,7 +21,7 @@ edit-alias() {
 # expand the 1st word as an alias:
 # not previous
 my-expand-alias() {
-    # get the 1st  sequence of non space:
+    # get the 1st sequence of non space:
     zle beginning-of-line;
     zle forward-word-match
 
@@ -60,6 +60,7 @@ my-expand-alias() {
 
 
 zle -N my-expand-alias
+
 # [05 lug 06] mmc:   So I go back to my function:
 bindkey '^[^e' my-expand-alias
 
