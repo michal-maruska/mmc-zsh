@@ -165,7 +165,9 @@ bindkey "^Xk" describe-key-briefly
 
 # bindkey "\e^H" run-help
 # bindkey "^Xj" run-help
-bindkey "^Xr" run-help
+bindkey "^Xt" run-help
+bindkey '^xr' caphuso_help
+
 # bindkey "\eh" run-help
 
 # bindkey "^-" undo
