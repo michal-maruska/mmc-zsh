@@ -3,17 +3,47 @@
 unalias run-help >& /dev/null
 autoload run-help
 
+# my-expand-abbrev() {
+#     local MATCH
+#     LBUFFER=${LBUFFER%%(#m)[_a-zA-Z0-9]#}
+#     LBUFFER+=${abbrevs[$MATCH]:-$MATCH}
+#     zle self-insert
+# }
+# bindkey " " my-expand-abbrev
+
 function caphuso_help (){
     # miciah:
     # buf="$BUFFER$RBUFFER";
 
+    # push on stack:
+    # (q) ... Quote characters that are special to the shell in the resulting
+    print -z ${(q)BUFFER}
+
     # what is this:  ##PATTERN -> same as "Filename Generation"
     #    # 0 or more occurence/repetition.             & this
     #
-    run-help ${${BUFFER##[[:blank:]]#((noglob|sudo)#[[:blank:]]#)#}%% *}
+    subject=${${BUFFER##[[:blank:]]#((noglob|sudo)#[[:blank:]]#)#}%% *}
+
+    # maybe recursively?
+    subject=${abbrevs[$subject]:-$subject}
+    subject=${${subject##[[:blank:]]#((noglob|sudo)#[[:blank:]]#)#}%% *}
+    # print "mmc: $subject"
+    # print -z ${(q)subject}
+    # Push the arguments onto the editing buffer stack, separated by
+    # I need to change:
+
+    # print -z ${(q)subject}
+    # ~/git/zsh/Functions/Misc/run-help
+
+    # this does not work with Git!
+    if false; then
+        run-help - "${(q)subject}"
+    else
+        run-help ${${BUFFER##[[:blank:]]#((noglob|sudo)#[[:blank:]]#)#}%% *}
+    fi
+    # ${subject}
     # Push the arguments onto the editing buffer stack, separated by spaces.
     # (q) ??
-    print -z ${(q)BUFFER}
     # send-break (^G ESC-^G) (unbound) (unbound)
     # Abort the current editor function, e.g.  execute-named-command, or
     # the editor itself, e.g.  if you are in vared.  Otherwise abort the
@@ -21,11 +51,10 @@ function caphuso_help (){
     # miciah does here:
     # zle .redisplay
 };
+
 zle -N caphuso_help;
 
-bindkey '^xt' caphuso_help
-
-#
+# what?
 autoload -Uz run-help-p4
 autoload -Uz run-help-git
 autoload -U run-help-conan
