@@ -208,3 +208,14 @@ bindkey '\e^N' history-beginning-search-forward-end
 
 # unsetopt MULTIBYTE
 bindkey '^g' vi-find-next-char
+###   failed attempt to have a 'dead' key which stops the isearch. sort-of "C-m" in isearch in emacs.
+my-history-incremental-search-backward()
+{
+    bindkey "^m" exit-search
+    zle history-incremental-search-backward
+    bindkey "^m" accept-line
+}
+
+zle -N my-history-incremental-search-backward
+bindkey "^r" my-history-incremental-search-backward
+
