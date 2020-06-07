@@ -90,6 +90,11 @@ bindkey "^[[3\^" kill-word
 bindkey "\eh" backward-kill-word
 # delete-word does not save into kill-ring!
 bindkey "^[d" kill-word
+# complete shell argument:
+# `new_widget' for the function
+zle -N kill-parameter kill-word-match
+zstyle :zle:kill-parameter word-style shell
+bindkey "^[k" kill-parameter
 
 
 # Meta:
