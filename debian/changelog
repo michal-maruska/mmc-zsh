@@ -1,3 +1,17 @@
+mmc-zsh (2.5) release; urgency=medium
+
+  * Install completions into vendor-completions/
+  * Move run-help* into Misc/
+  * spaces, format
+  * caphuso_help: Failed attempt to ignore noglob|sudo.
+  * reinstall ^d to push into kill-ring.
+  * beta user case: stop using bash-forward-word, use slightly different builtin
+  * use caphuso-help, but keep the original one too.
+  * Failed attempt to have a 'dead' key which stops the isearch.
+  * C-k to delete argument
+
+ -- Michal Maruska <mmaruska@gmail.com>  Tue, 04 Aug 2020 15:37:09 +0200
+
 mmc-zsh (2.4) release; urgency=medium
 
   * tabs
