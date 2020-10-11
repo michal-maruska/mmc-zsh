@@ -222,5 +222,5 @@ my-history-incremental-search-backward()
 }
 
 zle -N my-history-incremental-search-backward
-bindkey "^r" my-history-incremental-search-backward
+# bindkey "^r" my-history-incremental-search-backward
 
