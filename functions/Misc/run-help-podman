@@ -1,0 +1,30 @@
+if [ $# -eq 0 ]; then
+    man podman
+else
+    local al
+    # $(git config --get "alias.$1")
+
+    # fixme: more can be used!
+    if al=$1; then
+        subcmd=${al%% *}
+    fi
+
+    if [[ $subcmd =~ '^-.*' ]]
+    then
+        man podman
+        # exit 0
+    else
+
+        if op=$2; then
+            oper=${op%% *}
+        fi
+
+        if [[ $oper =~ '^-.*' || -z $oper ]]
+        then
+            man podman-$subcmd
+        else
+            man podman-$subcmd-$oper
+        fi
+    fi
+    #man git-$1
+fi
