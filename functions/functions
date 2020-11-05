@@ -64,8 +64,9 @@ fi
 
 #
 fpath+=/usr/share/zsh/site-functions/Misc
-autoload -Uz run-help-mygit-buildpackage
-autoload -Uz run-help-git
+
+autoload -Uz run-help-podman
+autoload -Uz run-help-docker
 
 
 #from kill-hook
