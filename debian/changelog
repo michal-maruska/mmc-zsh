@@ -1,3 +1,12 @@
+mmc-zsh (2.6) release; urgency=medium
+
+  * help-docker: support 2 levels of subcommands
+  * give up on my-history-incremental-search-backward
+  * Add rudimentary run-help-podman
+  * autoload the run-* functions
+
+ -- Michal Maruska <mmaruska@gmail.com>  Thu, 05 Nov 2020 10:20:58 +0100
+
 mmc-zsh (2.5) release; urgency=medium
 
   * Install completions into vendor-completions/
