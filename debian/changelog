@@ -1,3 +1,9 @@
+mmc-zsh (2.7) release; urgency=medium
+
+  * reimplement *-to-/ widgets directly
+
+ -- Michal Maruska <mmaruska@gmail.com>  Sun, 08 Nov 2020 01:37:01 +0100
+
 mmc-zsh (2.6) release; urgency=medium
 
   * help-docker: support 2 levels of subcommands
