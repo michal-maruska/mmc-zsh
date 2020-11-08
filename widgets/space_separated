@@ -18,13 +18,36 @@ my_extended_wordchars_slash="${my_extended_wordchars}/"
 
 
 backward-to-/ () {
-    local WORDCHARS=${my_extended_wordchars}
-    zle .backward-word
+    if ((CURSOR == 0)); then
+	return
+    elif (( --CURSOR == 0 ));  then
+	return
+    fi
+
+    # at the end I'm on the / -- that means cursor is after
+    while [[ $BUFFER[$CURSOR] != '/' ]]
+	  do
+	      if (( --CURSOR == 0 ));  then
+		  break
+	      fi
+    done
 }
 
+
 forward-to-/ () {
-    local WORDCHARS=${my_extended_wordchars}
-    zle .forward-word
+    if ((CURSOR == $#BUFFER)); then
+	return
+    elif (( ++CURSOR == $#BUFFER ));  then
+	return
+    fi
+
+    # at the end I'm on the / -- that means cursor is after
+    while [[ $BUFFER[$CURSOR] != '/' ]]
+	  do
+	      if (( ++CURSOR == $#BUFFER ));  then
+		  break
+	      fi
+    done
 }
 
 
