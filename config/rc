@@ -92,6 +92,7 @@ PERIOD=60
 
 ### Prompt && title etc.
 source  ${MYZSHDIR}/title
+source  ${MYZSHDIR}/prompt
 
 # Some environment variables
 
