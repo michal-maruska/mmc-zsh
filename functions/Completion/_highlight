@@ -1,0 +1,108 @@
+#compdef highlight
+
+# -l+:message:
+# -format::(letter A4)
+
+#_arguments [ -nswWCRS ] [ -A PAT ] [ -O NAME ] [ -M MATCHSPEC ]
+#           [ : ] SPEC ...
+# -n -> NORMARG is set.  position of the first normal argument in the $words array,
+# -s ... stacking
+# -w  ... even with arguments.
+# -S ... not after --
+# -A pat  ... not after 1st argument.
+
+# N:MESSAGE:ACTION
+# N::MESSAGE:ACTION  ... optional
+# :MESSAGE:ACTION     next args.
+# ::MESSAGE:ACTION
+# *:MESSAGE:ACTION
+# *::MESSAGE:ACTION
+# *:::MESSAGE:ACTION
+
+# OPTSPEC
+# OPTSPEC:...   takes arg.
+# *OPTSPEC .. may be repeated.
+#....
+# OPTSPEC[EXPLANATION]
+
+#
+# OPTARG following an OPTSPEC:
+# :MESSAGE:ACTION
+# even multiple:  :MESSAGE1:ACTION1:MESSAGE2:ACTION2
+# :*PATTERN:MESSAGE:ACTION  ...
+
+# exec 2>> /run/user/1000/tab-complete
+# set -x
+
+# mmc: `verbose' style about the [description]
+
+# Completing option
+# --list-scripts            -- list the available plugins
+# --out-format    --style   -- Specify: tag
+# --src-lang      --syntax  -- Specify: source lang
+# --force      --fragment   --help       --progress   --quiet      --verbose
+
+# Specify: TAG
+
+
+# mmc: -> requires this -C option!
+_arguments -C \
+           '1:input file:_files' \
+           '(- :)'{--help,-h}'[display help message]' \
+           '-q' '--quiet' \
+           '-v' '--verbose' \
+           '-P' '--progress' \
+           '--force' \
+           '-f' '--fragment' \
+           '-s' '--style=:tag:->theme' \
+           \
+           '-O[description of the option]:tag:' \
+           '--src-lang=:source lang:->source_lang' \
+           '--syntax=:source lang:->source_lang' \
+           \
+           '--out-format=:tag:(html xhtml latex tex odt rtf ansi xterm256 truecolor bbcode pango svg)' \
+           '--list-scripts=[list the available plugins]: :(langs themes plugins)' && ret=0
+
+# for gnu compatibility! --src-lang
+# -S, --syntax=<type>
+# --print-config
+# --start-nested
+# -F, --reformat=
+
+
+# highlight --print-style --stdout
+
+#  '--out-format=: :{highlight --list-scripts=langs |sed -n -e  "s/^.* \: \([a-z]\+\)\s\?.*$/\1/g;T;p"}' \
+
+# || ret=$
+
+# so -C updated `curcontext'
+
+# will strip all leading and trailing whitespace from STRING
+# state_descr[] MESSAGE field from each OPTARG containing such an ACTION.
+case $state in
+    source_lang)
+        # typeset -a available
+        /usr/bin/highlight --list-scripts=langs |sed  -n -e  's/^.* : \([a-z]\+\)\s\?.*$/\1/g;T;p'|
+            while read line; do
+                # compadd -a AVAILABLE
+                echo "adding $line" >> /run/user/1000/tab-complete
+                compadd -- $line && ret=0
+            done
+        ;;
+    theme)
+        highlight --list-scripts=themes | tail -n +4|head -n -13 |
+            while read line; do
+                # compadd -a AVAILABLE
+                echo "adding $line" >> /run/user/1000/tab-complete
+                compadd -- $line && ret=0
+            done
+        ;;
+    *)
+esac
+#  '--lang-list' 
+
+# --out-format=
+#
+
+return $ret
