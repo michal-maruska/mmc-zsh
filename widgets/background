@@ -1,0 +1,27 @@
+
+zle_log()
+{
+    print $@ >&2
+}
+
+accept-line-background (){
+    # go to the end, if "&" do nothing, else add
+    # [-2,-1]
+
+    # last non-space?
+    # zle_log "rbuffer ends in >${BUFFER: -1:1}<"
+
+    if [[ ${BUFFER[-1]} != "&" ]]
+    then
+           BUFFER+="&"
+    fi
+    # accept-line
+    #local region=${LBUFFER[0,$CURSOR]}
+    #print -z ${"$(<$1)"}
+    zle accept-line
+}
+
+
+zle -N accept-line-background
+
+bindkey '^[j' accept-line-background

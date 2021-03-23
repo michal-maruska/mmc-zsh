@@ -1,6 +1,8 @@
 #
 # quite good
 bindkey -s '^[j' '^e&^m'
+# ( )&
+
 
 # untested
 # bindkey -s '^|' '^E&!'

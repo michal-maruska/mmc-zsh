@@ -18,7 +18,7 @@ install:
 	foreach file  (functions/Completion/*(.)) { $(INSTALL) -D $$file  $(DESTDIR)$(completions_dir)/ }
 
 
-	for file in keys/*; do $(INSTALL) -D $$file  $(DESTDIR)$(topdir)/; done
+	# for file in keys/*; do $(INSTALL) -D $$file  $(DESTDIR)$(topdir)/; done
 	for file in config/*; do $(INSTALL) -D $$file  $(DESTDIR)$(topdir)/; done
 
 #	$(INSTALL) -d $(DESTDIR)$(topdir)/recipes
