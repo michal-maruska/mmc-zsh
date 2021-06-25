@@ -22,10 +22,14 @@ function caphuso_help (){
     # what is this:  ##PATTERN -> same as "Filename Generation"
     #    # 0 or more occurence/repetition.             & this
     #
+    local subject
+
+    # take the command:
     subject=${${BUFFER##[[:blank:]]#((noglob|sudo)#[[:blank:]]#)#}%% *}
 
     # maybe recursively?
-    subject=${abbrevs[$subject]:-$subject}
+    subject=${aliases[$subject]:-$subject}
+
     subject=${${subject##[[:blank:]]#((noglob|sudo)#[[:blank:]]#)#}%% *}
     # print "mmc: $subject"
     # print -z ${(q)subject}
@@ -50,7 +54,7 @@ function caphuso_help (){
     zle send-break
     # miciah does here:
     # zle .redisplay
-};
+}
 
 zle -N caphuso_help;
 
