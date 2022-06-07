@@ -2,7 +2,7 @@
 
 # register:
 cat >> /etc/zsh/zshrc <<EOF
-source /usr/share/zsh/site-functions/rc
+source /usr/share/zsh/site-functions/rc.zsh
 EOF
 
 
