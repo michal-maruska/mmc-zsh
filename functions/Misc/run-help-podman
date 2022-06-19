@@ -1,5 +1,7 @@
+CMD=podman
+
 if [ $# -eq 0 ]; then
-    man podman
+    man $CMD
 else
     local al
     # $(git config --get "alias.$1")
@@ -11,8 +13,7 @@ else
 
     if [[ $subcmd =~ '^-.*' ]]
     then
-        man podman
-        # exit 0
+        man $CMD
     else
 
         if op=$2; then
@@ -21,10 +22,15 @@ else
 
         if [[ $oper =~ '^-.*' || -z $oper ]]
         then
-            man podman-$subcmd
+            man $CMD-$subcmd
         else
-            man podman-$subcmd-$oper
+            case $subcmd in
+                container)
+                    man $CMD-$subcmd-$oper
+                    ;;
+                *)
+                    man $CMD-$subcmd
+            esac
         fi
     fi
-    #man git-$1
 fi
