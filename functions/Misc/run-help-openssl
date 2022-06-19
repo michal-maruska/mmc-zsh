@@ -1,0 +1,36 @@
+
+CMD=openssl
+if [ $# -eq 0 ]; then
+    man openssl
+else
+    local al
+    # mmc:
+    if al=$1; then
+        subcmd=${al%% *}
+    fi
+
+    # is that an option?
+    if [[ $subcmd =~ '^-.*' ]]
+    then
+        man $CMD
+    else
+        if op=$2; then
+            oper=${op%% *}
+        fi
+
+        if [[ $oper =~ '^-.*' || -z $oper ]]
+        then
+            man $CMD-$subcmd
+        else
+            case $subcmd in
+                ps)
+                    man $CMD-$subcmd-$oper
+                    ;;
+                *)
+                    man $CMD-$subcmd
+            esac
+        fi
+    fi
+    #man git-$1
+fi
+
