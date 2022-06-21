@@ -90,7 +90,7 @@ _openvpn() {
         "--log:file:_files"
         "--log-append:file:_files"
         "--mute:n:"
-        '--verb[level]:number:'
+        '--verb[level: 0 fatal 1-4 normal  5 RW 6-11 debug]:number:'
     )
 
     local -a protocol_options
@@ -265,8 +265,8 @@ _openvpn() {
     generic_options=(
         --help
         "--auth-nocache[Don't cache username/passwords in virtual memory]"
-        "--cd::_dir"
-        "--chroot::_dir"
+        "--cd:directory:_files -/"
+        "--chroot:directory:_files -/"
         "--setcon:SEL context:"
         --group:group:_groups
         --user:user:_users # fixme!
