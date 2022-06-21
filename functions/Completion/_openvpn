@@ -174,18 +174,19 @@ _openvpn() {
         '--connect-freq:n per sec:'
 
         '--ifconfig-pool:start-ip end-ip mask:'
-        '--ifconfig-pool-persist(file seconds/600):'
-        '--ifconfig-push(local remote-netmask):'
+        '--ifconfig-pool-persist[file seconds/600]:file:_files ::seconds:'
+        '--ifconfig-push[local remote-netmask]:netmask:'
         '--client-connect:script'
         --multihome
-        --iroute
-        '--max-clients(n):'
+        '--iroute[network \[netmask\]]:network: ::netmask:'
+        '--max-clients[n]:number:'
         # ddos
-        '--max-routes-per-client(n/256):'
+        '--max-routes-per-client[n/256]::number:'
+        --opt-verify
         #
-        '--port-share(host port dir):'
-
-        '--push(--route, --route-gateway, --route-delay, --redirect-gateway, --ip-win32, --dhcp-option,--dns, --inactive, --ping, --ping-exit, --ping-restart, --setenv, --auth-token, --persist-key, --persist-tun, --echo, --comp-lzo,  --socket-flags,  --snd-buf, --rcvbuf)'
+        '--port-share[host port \[dir\]]:host: :port: ::dir:_files -/'
+        '--push[option: route route-gateway route-delay redirect-gateway ip-win32 dhcp-option dns inactive ping ping-exit ping-restart setenv auth-token persist-key persist-tun echo comp-lzo  socket-flags  snd-buf rcvbuf]:option-name:(route route-gateway route-delay redirect-gateway ip-win32 dhcp-option dns inactive ping ping-exit ping-restart setenv auth-token persist-key persist-tun echo comp-lzo socket-flags snd-buf rcvbuf)'
+        # (--route --route-gateway --route-delay --redirect-gateway --ip-win32 --dhcp-option,--dns --inactive --ping --ping-exit --ping-restart --setenv --auth-token --persist-key --persist-tun --echo --comp-lzo  --socket-flags  --snd-buf --rcvbuf)
         --push-remove
         --push-reset
 
@@ -195,14 +196,14 @@ _openvpn() {
         # ethernet bridging configurations
 
         # default option
-        '--verify-client-cert(mode):(none optional require)'
+        '--verify-client-cert[mode]:mode:(none optional require)'
     )
 ##    network
     link_options=(
         "--bind"
         --float
         --fragment
-        --keepalive
+        '--keepalive[period wait]:seconds: :seconds:'
         --link-mtu
         '--local[host]:host:'
         "--lport[port number]:port: "
