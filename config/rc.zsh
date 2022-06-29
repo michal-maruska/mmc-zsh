@@ -41,6 +41,19 @@ freload() { while (( $# )); do; unfunction $1; autoload -U $1; shift; done }
 # Where to look for autoloaded function definitions
 # But I want it at the beginning!
 fpath=(~/.zfunc $fpath)
+# Prefer my site-functions:
+after=/usr/share/zsh/functions/Misc
+before=/usr/share/zsh/site-functions/Misc
+
+index=${fpath[(i)$after]}
+index2=${fpath[(i)$before]}
+
+# echo "indices $index $index2"
+if (( index < index2 ))
+then
+    fpath[$index]=$before
+    fpath[$index2]=$after
+fi
 
 # Autoload all shell functions from all directories in $fpath (following
 # symlinks) that have the executable bit on (the executable bit is not
