@@ -213,24 +213,41 @@ _openvpn() {
         '--reneg-sec[seconds/3600]:seconds:'
     )
 
-    ## this is if I'm client
+# CLIENT
+    local -a client_options
+    if (( words[(b:CURRENT-1:I)--(tls-client|client)] ))
+    then
+    echo "adding client options" >> $logfile
+
+    ## This is if I'm client:
+    # The client options are used when connecting to an OpenVPN server configured to use --server,
+    # --server-bridge, or --mode server in its configuration.
     client_options=(
+        '--allow-pull-fqdn[Allow client to pull DNS names from server for --ifconfig, --route, and --route-gateway]'
         #
-        --allow-recursive-routing
+        '--allow-recursive-routing[not drop incoming tun packets with same destination as host]'
         #
-        --auth-user-pass
+        '--auth-token[token for --client-connect?]:token:'
+        '--auth-token-user[base64username]:username:'
+        '--auth-user-pass[Authenticate with server using username/password \[file\]]::file:_file'
+        '--auth-retry[type]:type:(none nointeract interact)'
 
-        '--client[pull tls-client]'
-        --client-nat::
+        '--client-nat[pushable client option sets up stateless 1-1 NAT rule on packet addresses]:direction:(snat dnat) :netmask:'
+        '--dns' #:(search-domains server resolve-domains dnssec transport sni)
 
-        '--connect-retry[seconds between/5 doubled]:seconds:'
-        '--connect-retry-max[max 300s]'
-        --dns #:(search-domains server resolve-domains dnssec transport sni)
-        #
-        '--inactive[n bytes]:seconds:'
-        '--proto-force[tcp udp]'
+        '--connect-retry[seconds -- between connection attempt, doubled/5]:seconds: ::maximum:'
+        '--connect-retry-max[max/300s]:seconds:'
+        '--connect-timeout[see --server-poll-timeout]:number seconds:'
+        '--server-poll-timeout[N seconds before trying the next server/120]:seconds:'
 
-        --push-peer-info
+        '--explicit-exit-notify[send peer exit notification if tunnel is restarted or OpenVPN process is exited]::number attempts:'
+        '--inactive[exit if no data traffic on TUN for seconds \[bytes\]]:seconds: ::bytes:'
+        '--proto-force[use only profiles of protocol: tcp udp]:protocol:(tcp udp)'
+
+        '--pull[accept options pushed by the server, must be used to connect to  multi-client server]'
+        # todo: only after pull?
+        '--pull-filter[(accept|ignore|reject) text]:operation:(accept ignore reject):options:'
+        '--push-peer-info'
         # always:
         # IV_VER=
         # IV_PLAT=[linux|solaris|openbsd|mac|netbsd|freebsd|win]
@@ -241,14 +258,21 @@ _openvpn() {
         # IV_HWADDR
         # UV_ generic Env Variables?
 
-        # '--remote:host [port [proto]]:_host'
-        '--remote[host optional: port proto]:host: ::port: ::proto: '
-        '--server-poll-timeout:n seconds:'
-        '--static-challenge: args:'
-        --http-proxy
-        --http-proxy-option
+        '(--float)--remote[host \[port \[proto\]\]]:host:_host::port: ::proto: '
+        # note: Since UDP is connectionless, connection failure is defined by the --ping and --ping-restart options.
 
+        '--remote-random'
+        '--remote-random-hostname[to prevent DNS caching]'
+        # 0
+        '--resolv-retry[n or infinite]:seconds:(infinite)'
+        '--single-session[with --ping-exit or --inactive]'
+        '--static-challenge[text echo]:text: :echo:(0 1)'
+
+        '--http-proxy[host port authfile]'
+        --http-proxy-option
+        '--socks-proxy'
     )
+    fi
 
     server_otpions=(
         # fixme: :: means optional!
