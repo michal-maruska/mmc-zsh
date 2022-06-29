@@ -156,13 +156,19 @@ _openvpn() {
         )
     fi
 
+# LOG
     local -a log_options
     log_options=(
+        "--echo[params into log]"
         "--errors-to-stderr"
-        "--log:file:_files"
+        "--log[including scripts, file truncated]:file:_files"
         "--log-append:file:_files"
-        "--mute:n:"
-        '--verb[level: 0 fatal 1-4 normal  5 RW 6-11 debug]:number:'
+        '--machine-readable-output'
+        "--mute[at most n consecutive messages in the same category]:seconds:"
+        '--mute-replay-warnings[common on Wifi]'
+        '--suppress-timestamps'
+        '--syslog[without daemon]:name:'
+        '--verb[level: 0 fatal 1-4 normal  5 RW 6(NAT)-11 debug]:number:'
     )
 
     local -a protocol_options
