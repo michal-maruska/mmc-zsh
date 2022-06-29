@@ -394,49 +394,63 @@ _openvpn() {
         --management-up-down
     )
 
+# GENERIC
     local -a generic_options
+    generic_options_passwords=(
+        "--auth-nocache[Don't cache username/passwords in virtual memory]"
+    )
     generic_options=(
         --help
-        "--auth-nocache[Don't cache username/passwords in virtual memory]"
+        # should be absolute path!
         "--cd:directory:_files -/"
         "--chroot:directory:_files -/"
-        "--setcon:SEL context:"
+
+
+        #should be used: (--persist-key --persist-tun)
+        "--setcon[Apply SELinux context after initialization, needs /proc]:SEL context:"
         --group:group:_groups
         --user:user:_users # fixme!
+        # what's the point ^^ of this `second:'
+        '--script-security[0 -no hooks 1-only builtin 2-call 3-passwords passed]:level:(0 1 2 3)'
+
 
         # OPENVPN_PLUGIN_CLIENT_CONNECT
         # OPENVPN_PLUGIN_AUTH_USER_PASS_VERIFY
-        "--tmp-dir:directory:_files -/"
-        "--config::_files"
+        "--tmp-dir[writes files for hooks]:directory:_files -/"
+        # for hooks: --client-connect
+
+        "--config:file:_files"
         # mmc: Note that configuration files can be nested to a reasonable depth.
 
         # I need an argument, but no completion
-        "--daemon:progname:"
-        "--writepid:file:_files"
+        "(--auth-user-pass --auth-nocache)--daemon[syslog (unless --log)]:progname:"
 
         '--engine[use --show-engine]:ssl engine:'
         # parse and extract [name]
         #
         ## ssl
         '--providers[ssl external provider]:ssl-provider:'
-        '--use-prediction-resistance(DANGEROUS: depletes RNG)'
-        # --fast-io
+
+        '--use-prediction-resistance[DANGEROUS: depletes RNG]'
+        '--fast-io[avoid poll/epoll/select call prior to write]'
 
         #--iproute:command:_cmd
         # OPENVPN_PLUGIN_TLS_FINAL
 
-        --mlock
+        '--mlock[Disable  paging  by calling the POSIX mlockall function]'
         '--nice[level]:number:'
-        '--persist-key[across SIGUSR1 or --ping-restart]'
-        --remap-usr1:signal:
-        # what's the point ^^ of this `second:'
-        '--script-security:level:(0 1 2 3)'
 
-        --test-crypto
+        # signals:
+        "--persist-key[don't re-read files across SIGUSR1 or --ping-restart]"
+        '--remap-usr1[SIGUSR1 remapped to restart without persisting state or exit]:signal:(SIGHUP SIGTERM)'
+
+        '(--dev --remote)--test-crypto[self-test, without peers]'
+
+        "--writepid:file:_files"
+        "--status[write client list: file \[seconds\]]:file:_files ::seconds:"
+        # todo: only if that is there!
+        "--status-version[1 traditional,comma-sep' 2 more 3 tabs]:version:(1 2 3)"
     )
-
-#  if (( words[(b:CURRENT-1:I)--format=*] )); then
-#    case ${words[$words[(I)--format=*]]#--format=} in
 
 # sudo openvpn --tls-server --ca /home/michal/vpn-crypto/ca.crt --data-ciphers AES-256-CBC   --dev tun1 --verb 0 --lport 1194 --ifconfig 10.9.8.12 10.9.8.11
     # `needs' --dh
@@ -447,6 +461,7 @@ _openvpn() {
     # so $tls_options only if ?
     _arguments -C -S : \
                $generic_options \
+               $generic_options_passwords \
                $log_options \
                $protocol_options \
                $client_options \
