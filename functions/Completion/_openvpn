@@ -348,17 +348,27 @@ _openvpn() {
         --tcp-nodelay
     )
 
+# VPN
     vpn_options=(
-        --bind-dev:device:_files
+        '--bind-dev[Set device to bind the server socket to]:device:_files'
+        # eno1?
+
         --block-ipv6
+
         '--dev:tun/tap:(tun0 tun1 tun2 tun3 tun4 tap ovpn)'
-        '--dev-node:full path:_files /dev/*'
+
+        # these go along
+        '--dev-node:full path:_files -g "/dev/*"'
         '--dev-type::(tun tap)'
-        '--dhcp-option:options:'
+
+        #
+        '--dhcp-option[Set additional network parameters: type \[parm\]]:options:'
+
+        '--ifconfig[ip (tun -> remote ip) (tap -> subnet)]:ip: :remoteIP: '
+
         '--ifconfig-noexec'
         '--ifconfig-nowarn'
-        '--ifconfig[ip (tun -> remote ip) (tap -> subnet)]:ip: :remoteIP: '
-        "--persist-tun[don't reopend accross sigusr1/--ping-restart]"
+        "--persist-tun[don't reopen accross sigusr1/--ping-restart]"
         '--redirect-gateway:flags:(local autolocal def1 bypass-dhcp bypass-dns block-local ipv6 ipv4)'
         '--routet[network/IP optional: netmask gateway metric]:args:'
         '--topology:mode:(net30 p2p subnet)'
