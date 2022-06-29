@@ -365,16 +365,22 @@ _openvpn() {
         '--tun-mtu[maximum datagram size in bytes/1500]:n:'
         '--tun-mtu-extra:n:'
     )
+# SCRIPTING
+    local -a scripting_integration_options
     scripting_integration_options=(
-        '--auth-user-pass-verify[cmd method]:args:'
-        --client-connect:cmd:
-        --client-disconnect:cmd:
-        --down:cmd:
-        --ipchange:cmd:
-        '--setenv:name value:'
-        --tls-verify:cmd:
-        --up:cmd:
+        '--up[after socket bind and TUN/TAP open]:cmd:'
+        '--tls-verify[untrusted client]:cmd:'
+        '--ipchange[authenticated, or ip changed]:cmd:'
+        '--client-connect[immediately after client authentication]:cmd:'
 
+        '--route-up[after connection authentication,see --route-delay]'
+        '--route-pre-down[]'
+        '--client-disconnect[client shutdown]:cmd:'
+        '--down[socket & tun close]:cmd:'
+        '--learn-address'
+        '--auth-user-pass-verify[cmd method]:args:'
+
+        {--setenv,--setenv-safe}':name value:'
     )
 
 
