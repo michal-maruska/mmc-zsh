@@ -497,6 +497,14 @@ _openvpn() {
                 # -t tag  'name' array
                 _describe  "keytype" keytypes
                 ;;
+            curves)
+                curves=($(openvpn --show-curves |tail -n +5))
+                compadd \
+                        -X "available %B%Ucurves" \
+                        -l \
+                        -a \
+                        -- curves
+                ;;
             ciphers)
 
                 local input_line
