@@ -464,6 +464,8 @@ _openvpn() {
                $generic_options_passwords \
                $log_options \
                $protocol_options \
+               $data_channel_renegotiation \
+               \
                $client_options \
                $server_options \
                \
