@@ -465,11 +465,13 @@ _openvpn() {
                $log_options \
                $protocol_options \
                $client_options \
-               $server_otpions \
+               $server_options \
                \
                $SSL_Library_information \
                $generating_options \
-               '--tls-server' \
+               '(--tls-client --tls-server)--client[=pull tls-client]' \
+               '(--tls-server)--tls-client[act as such during TLS handshake]' \
+               '(--tls-client)--tls-server[provide dh during the TLS handshak]' \
                $tls_options \
                $link_options \
                $vpn_options \
