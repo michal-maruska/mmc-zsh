@@ -67,35 +67,94 @@ _openvpn() {
 
     # todo: For these I need
     # P2MP client or server mode
-    tls_options=(
-        # OpenVPN initiates a TLS session over the `control' channel and uses it to exchange `cipher'
-        # and `HMAC' keys to protect the data channel. TLS mode uses a robust reliability layer over the
-        # UDP connection for all control channel communication, while the data channel, over which
-        # encrypted tunnel data passes, is forwarded without any mediation. The result is the best of
-        # both worlds: a fast data channel that forwards over UDP with only the overhead of encrypt,
-        # decrypt, and HMAC functions, and a control channel that provides all of the security
-        # features of TLS, including certificate-based authentication and `Diffie-Hellman' forward
-        # secrecy.
+    local -a tls_options
 
-        '--askpass[Get certificate password from console or file before we daemonize]:certificate-file:_files'
+# TLS options
 
-        '--ca[Certificate authority, root certificate]:pem file:_files *.pem'
-        '--capath[dir]'
+    if (( words[(b:CURRENT-1:I)--tls-(client|server)] ));
+    then
+        #
 
-        # so what?
-        '--cert[Local peer signed certificate pem file]:file:_files'
-        '--crl-verify[Certificate Revocation List]:args:'
+        echo "adding tls options" >> $logfile
+        # case ${words[$words[(I)--format=*]]#--format=} in
 
-        # after --tls-server
-        '--dh[Diffie Hellman parameters in .pem]:file:_files *.pem'
+        tls_options=(
+            # OpenVPN initiates a TLS session over the `control' channel and uses it to exchange `cipher'
+            # and `HMAC' keys to protect the data channel. TLS mode uses a robust reliability layer over the
+            # UDP connection for all control channel communication, while the data channel, over which
+            # encrypted tunnel data passes, is forwarded without any mediation. The result is the best of
+            # both worlds: a fast data channel that forwards over UDP with only the overhead of encrypt,
+            # decrypt, and HMAC functions, and a control channel that provides all of the security
+            # features of TLS, including certificate-based authentication and `Diffie-Hellman' forward
+            # secrecy.
 
-        # I want these options only if --tls-server is present.
-        # can I do it? ->action
-        '(--ca --cert --key)--pkcs12:file:_files'
-        # Specify a PKCS #12 file containing local private key, local certificate, and root CA certificate. This option can be used instead of --ca, --cert, and --key.
-        '--key:file:_files'
-    )
+            "--askpass[Get certificate password from console or \[file\] before we daemonize]::certificate-file:_files -W $fileroot"
+            # btw. openssl -nodes means avoid pass-phrase!
 
+            # {pem,
+            "(--pkcs12)--ca[Certificate authority, root certificate]:pem file:_files -g '*.crt' -W $fileroot"
+            "--capath[dir containing CAs and CRLs]:directory:_files -/ -W $fileroot"
+            # notice certs_by_serial
+            "--crl-verify[check Certificate Revocation List(CRL)]:pem file:_files -g '*.pem' -W $fileroot ::directory:_files -/"
+
+            # after --tls-server
+            "(--ecdh-curve)--dh[Diffie Hellman parameters in .pem]:file:_files -g '*.pem' -W $fileroot"
+
+            # todo: list them by --show-curves
+            "(--dh)--ecdh-curve[name]:curve:->curves"
+            '--tls-groups[list of groups curves :-separated]:curves:'
+            # X25519:secp256r1:X448:secp521r1:secp384r1
+            '--hand-window[seconds limit/60]:number:'
+
+
+            # I want these options only if --tls-server is present.
+            # can I do it? ->action
+            # so how does it relate to --ecdh-curve ?
+            "(--ca --cert --key)--pkcs12:file:_files -W $fileroot"
+            # Specify a PKCS #12 file containing local private key, local certificate, and root CA certificate. This option can be used instead of --ca, --cert, and --key.
+            "(--pkcs12)--key:file:_files -g '*.key' -W $fileroot"
+
+            # the certificate has embedded information. Here we match that info -- key usage and extended ku.
+            '--remote-cert-eku[require extended key usage]:oid:'
+            '--remote-cert-ku[bitmask encoded in hex]:keyUsage:'
+            '--remote-cert-tls[require key usage, RFC3280 TLS rules]:type:(server client)'
+
+            # DoS '--tls-auth'
+            "--tls-auth[sign every TLS control channel packet with HMAC: file \[direction\]]: :_files -W $fileroot ::number:(0 1)"
+            "(--tls-crypt-v2)--tls-crypt[Encrypt and authenticate all control channel packets]:keyfile:_files -g '*.key' -W $fileroot"
+            # on tls-server one can use both! todo!
+            "(--tls-crypt)--tls-crypt-v2[]:keyfile:_files -W $fileroot: ::option:(force-cookie allow-noncookie)"
+
+            # scripts:
+            '--tls-crypt-v2-verify[]:command:_files'
+
+            # WARNING: No server certificate verification method has been enabled
+            '--tls-cert-profile[allowed cryptographic algorithms for certificates]:profile:(insecure legacy preferred suiteb)'
+            '(--tls-ciphersuites)--tls-cipher[list of allowable TLS ciphers :-separated]:cipher:->ciphers'
+            '(--tls-cipher)--tls-ciphersuites[list of allowable TLS ciphers :-separated (tls 1.3)]:cipher:->ciphers'
+
+            "--cert[Local peer signed certificate pem file]:file:_files -g '*.crt' -W $fileroot"
+            "--extra-certs[file with concatenated certs]:file:_files -g '*.crt' -W $fileroot"
+
+            # mmc: what?
+            "--tls-exit[exit on TLS negotiation failure]"
+            '--tls-timeout[Packet retransmit timeout on TLS control channel/2]:seconds:'
+            #
+            # Data channel packets (which carry encrypted tunnel data) are never acknowledged,
+            # sequenced, or retransmitted by OpenVPN because the higher level network protocols
+            # running on top of the tunnel such as TCP expect this role to be left to them.
+            # mmc: if space :(1.0 1.1 1.2) ::  -> error! : command not found: (
+            '--tls-version-min[version \[or-highest\]]:option:(1.0 1.1 1.2) ::option:(or-highest)'
+            "--tls-export-cert[Store the certificates the clients use]:directory:_files -/ -W $fileroot"
+
+            # deprecated:
+            # --verify-hash
+            # --peer-fingerprint
+            '--verify-x509-name[X.509 name must be equal to name]:name: ::type:'
+            '--x509-track'
+            '--x509-username-field'
+        )
+    fi
 
     local -a log_options
     log_options=(
