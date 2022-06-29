@@ -204,10 +204,12 @@ _openvpn() {
         '--secret[deprecated file direction]:file:_files ::direction:'
         )
 
+# DATA CHANNEL RENEG.
+    data_channel_renegotiation=(
         # When running OpenVPN in client/server mode, the data channel will use a separate
         # ephemeral encryption key which is rotated at regular intervals.
-        '--reneg-bytes[after N bytes]:'
-        '--reneg-pkts[after N packets]:'
+        '--reneg-bytes[after N bytes]:number:'
+        '--reneg-pkts[after N packets]:number:'
         '--reneg-sec[seconds/3600]:seconds:'
     )
 
