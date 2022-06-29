@@ -171,6 +171,7 @@ _openvpn() {
         '--verb[level: 0 fatal 1-4 normal  5 RW 6(NAT)-11 debug]:number:'
     )
 
+# PROTOCOL
     local -a protocol_options
     protocol_options=(
         # Options in this section affect features available in the OpenVPN wire protocol.
@@ -178,9 +179,15 @@ _openvpn() {
         # the OpenVPN wire protocol.  These options must be configured in a compatible way
         # between both the local and remote side.
 
-        '--cipher[deprecated for server-client mode]:alg:'
+        '--allow-compression[potentially dangerous]:mode:(asym yes no)'
+        '--compress[deprecated]:alg:'
 
-        '--auth[digest algorithm/SHA1]:alg:'
+        '--cipher[ignored for TLS; deprecated]:alg:->ciphers'
+        # --show-ciphers
+
+        '--auth[Authenticate data channel packets-digest algorithm/SHA1]:alg:->digest'
+        # none
+        # AEAD cipher mod -> ignored! but not for tls-auth
         # encrypt-then-mac
 
         # In `static-key' encryption mode, the HMAC key is `included' in the key file
@@ -189,10 +196,13 @@ _openvpn() {
         # via the TLS control channel.
         # If OpenVPN receives a packet with a bad HMAC it will `drop' the packet. HMAC
         # usually adds 16 or 20 bytes per packet. Set alg=none to disable authentication.
-        '--data-ciphers[colon-separated]:cipher:->ciphers'
-        '--tran-window[n seconds between key renegot/3600]:'
+        '--data-ciphers[Restrict the allowed ciphers, colon-separated]:cipher:->ciphers'
+        '--data-ciphers-fallback[to connect with OLD versions]:cipher:->ciphers'
+        '--tran-window[old key can live this many seconds after a new a key renegotiated/3600]:seconds:'
 
-        # data channel renegotiation:
+        '--key-directions[for --tls-auth and --secret]'
+        '--secret[deprecated file direction]:file:_files ::direction:'
+        )
 
         # When running OpenVPN in client/server mode, the data channel will use a separate
         # ephemeral encryption key which is rotated at regular intervals.
