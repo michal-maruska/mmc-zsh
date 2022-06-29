@@ -274,7 +274,13 @@ _openvpn() {
     )
     fi
 
-    server_otpions=(
+# SERVER
+    local -a server_options
+    if (( words[(b:CURRENT-1:I)--(tls-server|server)] ))
+    then
+    echo "adding server options" >> $logfile
+
+    server_options=(
         # fixme: :: means optional!
         # '--mode::(p2p server)'
 
@@ -282,9 +288,9 @@ _openvpn() {
         '--auth-gen-token[lifetime external-auth]::'
         '--auth-gen-token-secret[secret for the HMAC]:file:_files'
 
-        '--client-config-dir::file -/'
+        '--client-config-dir:directory:file -/'
         # it is effectively a router.
-        --client-to-client
+        '--client-to-client[internally route client-to-client traffic rather than pushing]'
         '--connect-freq:n per sec:'
 
         '--ifconfig-pool:start-ip end-ip mask:'
@@ -313,6 +319,7 @@ _openvpn() {
         '--verify-client-cert[mode]:mode:(none optional require)'
     )
 ##    network
+    fi
     link_options=(
         "--bind"
         --float
