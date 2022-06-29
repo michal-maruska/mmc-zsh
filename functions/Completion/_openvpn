@@ -318,22 +318,28 @@ _openvpn() {
         # default option
         '--verify-client-cert[mode]:mode:(none optional require)'
     )
-##    network
     fi
+
+# LINK/network
     link_options=(
-        "--bind"
-        --float
-        --fragment
-        '--keepalive[period wait]:seconds: :seconds:'
-        --link-mtu
+        # also --proto tcp-client
+        "(--http-proxy --socks-proxy)--bind[ipv6only?]:keyword:(ipv6only)"
+        '(--remote)--float[Allow remote peer to change its IP address and/or port number]'
+        "--fragment[max \[mtu\] ...adds 4 bytes of overhead per datagram, allows fragmentation]: "
+        '--link-mtu[deprecated]'
+
+        '--keepalive[period wait -- see ping ping-restart]:seconds: :seconds:'
+        '--ping[Ping remote over the control channel if no packets (for firewalls --ping-exit)]:seconds:'
+        '--ping-restart[]:seconds:'
+        '--ping-exit[exit if no packet received in seconds]:seconds:'
+        # '--inactive'
+
         '--local[host]:host:'
         "--lport[port number]:port: "
         --mark
         # --mode
         --nobind
-        --ping:n:
-        --ping-exit:n:
-        --ping-restart:n:
+
         '--proto::(udp tcp-client tcp-server)'
         '--port[both local and remote]:port:'
         --rport:port:
