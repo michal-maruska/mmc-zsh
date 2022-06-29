@@ -40,6 +40,19 @@ _openvpn() {
     )
     # $keytypes
 
+# fileroot
+    local fileroot
+    if (( words[(b:CURRENT-1:I)--cd] ))
+    then
+        fileroot=${words[$words[(I)--cd] + 1]}
+        if [[ $fileroot[1] != '/' ]]; then
+            fileroot=$PWD/$fileroot
+        fi
+
+    else
+        : # fileroot=$PWD
+    fi
+    echo "found --cd directory $fileroot" >> $logfile
     local -a SSL_Library_information
     SSL_Library_information=(
         --show-ciphers
