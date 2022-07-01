@@ -284,7 +284,7 @@ _openvpn() {
         # fixme: :: means optional!
         # '--mode::(p2p server)'
 
-        '--mode:mode:(p2p server)'
+
         '--auth-gen-token[lifetime external-auth]::'
         '--auth-gen-token-secret[secret for the HMAC]:file:_files'
 
@@ -476,12 +476,13 @@ _openvpn() {
                $protocol_options \
                $data_channel_renegotiation \
                \
-               $client_options \
+               '--mode[set OpenVPN major mode]:mode:(p2p server)' \
                $server_options \
+               '(--tls-client --tls-server)--client[=pull tls-client]' \
+               $client_options \
                \
                $SSL_Library_information \
                $generating_options \
-               '(--tls-client --tls-server)--client[=pull tls-client]' \
                '(--tls-server)--tls-client[act as such during TLS handshake]' \
                '(--tls-client)--tls-server[provide dh during the TLS handshak]' \
                $tls_options \
