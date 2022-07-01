@@ -1,3 +1,34 @@
+mmc-zsh (2.9) release; urgency=medium
+
+  * caphuso-help: fix the lookup in aliases!
+  * rename rc to rc.zsh: it's implicitly a function name!
+  * bump up compat level
+  * improve the postinst: add_line_to_file()
+  * Help with help- functions: run-help-openssl, register it
+  * try to abstract the run-help
+  * add _openvpn
+  * _openvpn: fix the [documentation]
+  * _openvpn: fix dirs
+  * _openvpn: fileroot for relative arguments
+  * openvpn: tls options, conditional
+  * openvpn: log_options
+  * openvpn: protocol_options
+  * openvpn: data_channel
+  * openvpn: client
+  * openvpn: server options
+  * openvpn: link
+  * openvpn: scripting
+  * openvpn: generic & generic_options_passwords
+  * openvpn: add the clien/server options
+  * openvpn: data_channel_renegotiation
+  * openvpn curves
+  * openvpn: vpn
+  * log file
+  * rc: prefer site-functions/Misc to functions/Misc
+  * --mode is fundamental, base (even below client/server)
+
+ -- Michal Maruska <mmaruska@gmail.com>  Fri, 01 Jul 2022 14:21:47 +0200
+
 mmc-zsh (2.8) release; urgency=medium
 
   * split prompt out of title
