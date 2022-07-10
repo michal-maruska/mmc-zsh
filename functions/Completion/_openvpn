@@ -25,7 +25,7 @@ _openvpn() {
     local context state state_descr line
     typeset -A opt_args
 
-    if  [[ -f ${logfile::=${TMPDIR-/tmp}/state} ]]; then dump_state $logfile;fi
+    if  [[ -f ${logfile::=${TMPDIR-/tmp}/state} ]]; then dump_state $logfile;else touch $logfile ;fi
     local -a keytypes
     keytypes=(
         'secret:Standard OpenVPN shared secret keys'
