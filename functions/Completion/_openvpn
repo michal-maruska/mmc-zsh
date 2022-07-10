@@ -185,8 +185,7 @@ _openvpn() {
         '--cipher[ignored for TLS; deprecated]:alg:->ciphers'
         # --show-ciphers
 
-        '--auth[Authenticate data channel packets-digest algorithm/SHA1]:alg:->digest'
-        # none
+        '--auth[Authenticate data & control channel packets using digest algorithm/SHA1]:alg:->digests'
         # AEAD cipher mod -> ignored! but not for tls-auth
         # encrypt-then-mac
 
@@ -515,6 +514,14 @@ _openvpn() {
                         -l \
                         -a \
                         -- curves
+                ;;
+            digests)
+                local digests=($(openvpn --show-digests|tail -n +8| cut --field 1 --delimiter ' '))
+                compadd \
+                        -X "available %B%Udigests" \
+                        -l \
+                        -a \
+                        -- digests
                 ;;
             ciphers)
 
