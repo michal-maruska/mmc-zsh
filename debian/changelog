@@ -1,3 +1,11 @@
+mmc-zsh (2.10) release; urgency=medium
+
+  [ Michal Maruska ]
+  * vpn: create the log-file
+  * complete digests
+
+ --  <mmaruska@gmail.com>  Sat, 08 Jul 2023 14:30:36 +0200
+
 mmc-zsh (2.9) release; urgency=medium
 
   * caphuso-help: fix the lookup in aliases!
