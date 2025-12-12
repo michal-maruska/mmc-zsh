@@ -1,3 +1,11 @@
+mmc-zsh (2.12) unstable; urgency=medium
+
+  * under_xterm: accept xter-256color (wezterm)
+  * kill_region_hook: under WeZterm use a specific Esc-seq
+  * space
+
+ -- Michal Maruska <mmaruska@gmail.com>  Fri, 12 Dec 2025 11:59:41 +0100
+
 mmc-zsh (2.11) unstable; urgency=medium
 
   * to sid
