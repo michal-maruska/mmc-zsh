@@ -16,7 +16,8 @@ under_zsh(){
 
 under_xterm(){
 #echo "under xterm $TERM"
-[ "$TERM" = "xterm" -o  "$TERM" = "rxvt"  -o  "$TERM" = "rxvt-unicode" ]
+#
+[ "$TERM" = "xterm" -o  "$TERM" = "rxvt"  -o  "$TERM" = "rxvt-unicode" -o "$TERM" = "xterm-256color" ]
 # [[ $TERM == xterm ]]
 }
 
