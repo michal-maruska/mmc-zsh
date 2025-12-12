@@ -75,7 +75,6 @@ fpath+=/usr/share/zsh/site-functions
 autoload -Uz kill_region_hook
 
 
-
 # From maruska-preference:
 
 function hist()
