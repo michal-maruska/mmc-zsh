@@ -1,7 +1,13 @@
 
 kill_region_hook()
 {
-#	beep;
-	echo -ne "\e]56;$1\a"
-#	echo -e -n '\033]0;'${1}'\a'
+    if [[ $TERM_PROGRAM = "WezTerm" ]]
+       # "xterm-256color"
+    then
+        local encoded=$(echo "$1" | base64)
+        echo -ne "\e]52;cp;${encoded}\a"
+        #	echo -e -n '\033]0;'${1}'\a'
+    else
+        echo -ne "\e]56;$1\a"
+    fi
 }
