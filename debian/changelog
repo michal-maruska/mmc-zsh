@@ -1,3 +1,10 @@
+mmc-zsh (2.13) unstable; urgency=medium
+
+  * ci. build in my gh organization
+  * ci: update to build on stable/ or specific ref
+
+ -- Michal Maruska <mmaruska@gmail.com>  Mon, 17 Aug 2026 17:21:28 +0200
+
 mmc-zsh (2.12) unstable; urgency=medium
 
   * under_xterm: accept xter-256color (wezterm)
